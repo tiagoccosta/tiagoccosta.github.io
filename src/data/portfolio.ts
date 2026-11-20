@@ -131,14 +131,17 @@ export const UI_COPY = {
     },
     sim: {
       label: { en: 'Boids', pt: 'Boids' },
+      prey: { en: 'prey', pt: 'presas' },
+      eggs: { en: 'eggs', pt: 'ovos' },
+      predator: { en: '1 predator', pt: '1 predador' },
       attract: { en: 'Attract', pt: 'Atrair' },
       repel: { en: 'Repel', pt: 'Repelir' },
       vectors: { en: 'Vectors', pt: 'Vetores' },
       pause: { en: 'Pause', pt: 'Pausar' },
       play: { en: 'Play', pt: 'Retomar' },
       pointerHint: {
-        en: 'Move or click to steer',
-        pt: 'Mova ou clique para interagir',
+        en: 'Move to steer · click to drop energy',
+        pt: 'Mova para guiar · clique para soltar energia',
       },
     },
     platformsLabel: {

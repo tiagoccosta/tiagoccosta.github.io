@@ -7,7 +7,7 @@ import {
   Theme,
   UI_COPY,
 } from '../data/portfolio';
-import { BoidsCanvas } from './BoidsCanvas';
+import { BoidsCanvas, BoidsStats } from './BoidsCanvas';
 import { GitHubIcon, LinkedInIcon, UnityIcon } from './BrandIcons';
 
 interface HeroProps {
@@ -20,7 +20,12 @@ export function Hero({ lang, theme, enableTrailsAndObstacles }: HeroProps) {
   const [paused, setPaused] = useState(false);
   const [showGizmos, setShowGizmos] = useState(false);
   const [interactionMode, setInteractionMode] = useState<'attract' | 'repel'>('attract');
-  const [simStats, setSimStats] = useState({ fps: 60, count: 58 });
+  const [simStats, setSimStats] = useState<BoidsStats>({
+    fps: 60,
+    prey: 40,
+    eggs: 0,
+    food: 6,
+  });
 
   const copy = UI_COPY.hero;
 
@@ -130,15 +135,23 @@ export function Hero({ lang, theme, enableTrailsAndObstacles }: HeroProps) {
 
         {/* Discreet Boids interactive bar */}
         <div className="mt-12 flex flex-col gap-2.5 border-t border-slate-200/80 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:border-white/8 dark:text-slate-400">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="font-semibold text-slate-700 dark:text-slate-200">
               {copy.sim.label[lang]}
             </span>
             <span>·</span>
-            <span>{simStats.count}</span>
+            <span>
+              {simStats.prey} {copy.sim.prey[lang]}
+            </span>
+            <span>·</span>
+            <span>
+              {simStats.eggs} {copy.sim.eggs[lang]}
+            </span>
+            <span>·</span>
+            <span>{copy.sim.predator[lang]}</span>
             <span>·</span>
             <span>{paused ? copy.sim.pause[lang] : `${simStats.fps} fps`}</span>
-            <span className="hidden sm:inline text-slate-400 dark:text-slate-500">
+            <span className="hidden lg:inline text-slate-400 dark:text-slate-500">
               — {copy.sim.pointerHint[lang]}
             </span>
           </div>
