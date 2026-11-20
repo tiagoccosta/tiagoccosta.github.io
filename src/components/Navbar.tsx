@@ -16,7 +16,6 @@ interface NavbarProps {
 
 const FX_KEYS: Array<keyof FxSettings> = [
   'boidsTrailsObstacles',
-  'flowField',
   'springMesh',
   'signalNetwork',
   'microBursts',

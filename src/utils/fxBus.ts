@@ -1,6 +1,5 @@
 export interface FxSettings {
   boidsTrailsObstacles: boolean;
-  flowField: boolean;
   springMesh: boolean;
   signalNetwork: boolean;
   microBursts: boolean;
@@ -9,7 +8,6 @@ export interface FxSettings {
 
 export const DEFAULT_FX_SETTINGS: FxSettings = {
   boidsTrailsObstacles: true,
-  flowField: true,
   springMesh: true,
   signalNetwork: true,
   microBursts: true,

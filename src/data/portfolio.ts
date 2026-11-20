@@ -265,10 +265,6 @@ export const UI_COPY = {
         en: 'Boids trails & DOM avoidance',
         pt: 'Boids: rastros e desvio do layout',
       },
-      flowField: {
-        en: 'Flow-field section divider',
-        pt: 'Divisor fluido (Flow Field)',
-      },
       springMesh: {
         en: 'Spring mesh (About)',
         pt: 'Malha elástica (Sobre)',

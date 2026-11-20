@@ -3,7 +3,6 @@ import { AboutSkillsSection } from './components/AboutSkillsSection';
 import { ContactFooter } from './components/ContactFooter';
 import { EducationCertsSection } from './components/EducationCertsSection';
 import { ExperienceSection } from './components/ExperienceSection';
-import { FlowFieldDivider } from './components/FlowFieldDivider';
 import { GamesSection } from './components/GamesSection';
 import { Hero } from './components/Hero';
 import { Navbar } from './components/Navbar';
@@ -81,7 +80,6 @@ export function App() {
   const handleSetAllFx = (enabled: boolean) => {
     setFx({
       boidsTrailsObstacles: enabled,
-      flowField: enabled,
       springMesh: enabled,
       signalNetwork: enabled,
       microBursts: enabled,
@@ -110,7 +108,6 @@ export function App() {
         />
         <GamesSection lang={lang} microBurstsEnabled={fx.microBursts} />
         <ExperienceSection lang={lang} />
-        <FlowFieldDivider theme={theme} enabled={fx.flowField} />
         <AboutSkillsSection
           lang={lang}
           theme={theme}
