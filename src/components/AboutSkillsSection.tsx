@@ -1,11 +1,8 @@
-import { Cpu, Globe, Server, Sparkles } from 'lucide-react';
 import { Language, SKILL_GROUPS, UI_COPY } from '../data/portfolio';
 
 interface AboutSkillsSectionProps {
   lang: Language;
 }
-
-const GROUP_ICONS = [Cpu, Globe, Server, Sparkles] as const;
 
 export function AboutSkillsSection({ lang }: AboutSkillsSectionProps) {
   const copy = UI_COPY.about;
@@ -13,45 +10,49 @@ export function AboutSkillsSection({ lang }: AboutSkillsSectionProps) {
   return (
     <section
       id="about"
-      className="border-t border-slate-200 bg-slate-100/50 py-20 sm:py-24 dark:border-slate-800/70 dark:bg-[#0A0E18]/60"
+      className="border-t border-[#D2CFC5] bg-[#E7E5DD]/45 py-18 sm:py-22 dark:border-[#272A30] dark:bg-[#151619]/40"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-700 dark:text-cyan-300">
+        <div className="border-b border-[#D2CFC5] pb-6 dark:border-[#272A30]">
+          <p className="font-mono text-xs font-medium tracking-[0.16em] text-[#D94612] uppercase dark:text-[#FF5A1F]">
             {copy.eyebrow[lang]}
           </p>
-          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#141518] dark:text-[#ECEEE9] sm:text-4xl">
             {copy.title[lang]}
           </h2>
         </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-12">
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xs sm:p-8 lg:col-span-5 dark:border-slate-800 dark:bg-[#0D121E]">
-            <div className="space-y-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
+        <div className="mt-8 grid gap-6 lg:grid-cols-12">
+          <div className="rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6] p-6 sm:p-8 lg:col-span-5 dark:border-[#272A30] dark:bg-[#151619]">
+            <div className="mb-4 font-mono text-[10px] tracking-wider text-[#70757F] uppercase dark:text-[#6E747E]">
+              BIO_SUMMARY // README.MD
+            </div>
+            <div className="space-y-4 text-sm leading-relaxed text-[#4B4F57] dark:text-[#9A9FA8] sm:text-base">
               {copy.paragraphs.map((paragraph, idx) => (
                 <p key={idx}>{paragraph[lang]}</p>
               ))}
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
-            {SKILL_GROUPS.map((group, idx) => {
-              const Icon = GROUP_ICONS[idx % GROUP_ICONS.length];
-              return (
+          <div className="overflow-hidden rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6] lg:col-span-7 dark:border-[#272A30] dark:bg-[#151619]">
+            <div className="grid sm:grid-cols-2 sm:divide-x sm:divide-[#D2CFC5] dark:sm:divide-[#272A30]">
+              {SKILL_GROUPS.map((group, idx) => (
                 <div
                   key={group.id}
-                  className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-xs transition hover:border-slate-300 dark:border-slate-800 dark:bg-[#0D121E] dark:hover:border-slate-700"
+                  className={`flex flex-col p-5 sm:p-6 ${
+                    idx >= 2 ? 'border-t border-[#D2CFC5] dark:border-[#272A30]' : ''
+                  } ${idx === 1 ? 'border-t border-[#D2CFC5] sm:border-t-0 dark:border-[#272A30]' : ''}`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-cyan-500/25 bg-cyan-500/10 text-cyan-700 dark:border-cyan-400/25 dark:bg-cyan-400/10 dark:text-cyan-300">
-                      <Icon className="h-4 w-4" />
-                    </div>
-                    <h3 className="font-display text-base font-bold text-slate-900 dark:text-white">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3 className="font-display text-base font-bold text-[#141518] dark:text-[#ECEEE9]">
                       {group.title[lang]}
                     </h3>
+                    <span className="font-mono text-[11px] font-semibold text-[#D94612] dark:text-[#FF5A1F]">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
                   </div>
 
-                  <p className="mt-2.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                  <p className="mt-1.5 text-xs leading-relaxed text-[#70757F] dark:text-[#6E747E]">
                     {group.subtitle[lang]}
                   </p>
 
@@ -59,15 +60,15 @@ export function AboutSkillsSection({ lang }: AboutSkillsSectionProps) {
                     {group.items.map((item) => (
                       <span
                         key={item}
-                        className="rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1 font-mono text-xs text-slate-700 dark:border-slate-700/80 dark:bg-slate-900/90 dark:text-slate-200"
+                        className="rounded-[2px] border border-[#D2CFC5] bg-[#F2F1EC] px-2 py-0.5 font-mono text-[11px] text-[#141518] dark:border-[#272A30] dark:bg-[#1B1D21] dark:text-[#ECEEE9]"
                       >
                         {item}
                       </span>
                     ))}
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </div>

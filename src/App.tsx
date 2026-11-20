@@ -53,7 +53,12 @@ export function App() {
   }, [lang]);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    const isDark = theme === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) {
+      metaTheme.setAttribute('content', isDark ? '#0E0F11' : '#F2F1EC');
+    }
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, theme);
     } catch {
@@ -66,7 +71,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-[#07090F] dark:text-slate-100">
+    <div className="min-h-screen bg-[#F2F1EC] text-[#141518] transition-colors duration-200 dark:bg-[#0E0F11] dark:text-[#ECEEE9]">
       <Navbar
         lang={lang}
         onChangeLang={setLang}
@@ -75,14 +80,14 @@ export function App() {
         hasExperience={EXPERIENCE_ITEMS.length > 0}
       />
       <main>
-        <Hero lang={lang} />
+        <Hero lang={lang} theme={theme} />
         <GamesSection lang={lang} />
         <ExperienceSection lang={lang} />
         <AboutSkillsSection lang={lang} />
         <ProjectsSection lang={lang} />
         <EducationCertsSection lang={lang} />
       </main>
-      <ContactFooter lang={lang} />
+      <ContactFooter lang={lang} theme={theme} />
     </div>
   );
 }

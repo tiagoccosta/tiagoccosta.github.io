@@ -1,93 +1,95 @@
-import { ArrowUpRight, Brain, Boxes, Network } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Language, PERSONAL_PROJECTS, UI_COPY } from '../data/portfolio';
 
 interface ProjectsSectionProps {
   lang: Language;
 }
 
-function getFallbackIcon(id: string) {
-  if (id === 'tnet') return Network;
-  if (id === 'vbrain') return Brain;
-  return Boxes;
+function getCodePrefix(id: string): string {
+  if (id === 'sequenciator-system') return 'TOOL_01';
+  if (id === 'tnet') return 'LIB_02';
+  if (id === 'vbrain') return 'AI_03';
+  if (id === 'sea-creatures-store') return 'APP_04';
+  return 'APP_05';
 }
 
 export function ProjectsSection({ lang }: ProjectsSectionProps) {
   const copy = UI_COPY.projects;
 
   return (
-    <section id="projects" className="border-t border-slate-200 py-20 sm:py-24 dark:border-slate-800/70">
+    <section
+      id="projects"
+      className="border-t border-[#D2CFC5] py-18 sm:py-22 dark:border-[#272A30]"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-700 dark:text-cyan-300">
+        <div className="border-b border-[#D2CFC5] pb-6 dark:border-[#272A30]">
+          <p className="font-mono text-xs font-medium tracking-[0.16em] text-[#D94612] uppercase dark:text-[#FF5A1F]">
             {copy.eyebrow[lang]}
           </p>
-          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#141518] dark:text-[#ECEEE9] sm:text-4xl">
             {copy.title[lang]}
           </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-400 sm:text-base">
+          <p className="mt-2.5 max-w-2xl text-sm leading-relaxed text-[#4B4F57] dark:text-[#9A9FA8] sm:text-base">
             {copy.subtitle[lang]}
           </p>
         </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {PERSONAL_PROJECTS.map((project) => {
-            const FallbackIcon = getFallbackIcon(project.id);
-            return (
-              <a
-                key={project.id}
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-xs transition hover:-translate-y-0.5 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-slate-200/70 dark:border-slate-800 dark:bg-[#0D121E] dark:hover:border-cyan-400/45 dark:hover:bg-[#101726] dark:hover:shadow-none"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3.5">
-                    {project.iconImage ? (
-                      <img
-                        src={project.iconImage}
-                        alt={project.title}
-                        loading="lazy"
-                        className="h-12 w-12 rounded-xl border border-slate-200 object-cover dark:border-slate-700/80"
-                      />
-                    ) : (
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-indigo-500/25 bg-indigo-500/10 text-indigo-600 dark:border-indigo-400/30 dark:text-indigo-300">
-                        <FallbackIcon className="h-5 w-5" />
-                      </div>
-                    )}
-                    <div>
-                      <span className="block font-mono text-[11px] uppercase tracking-wider text-cyan-700 dark:text-cyan-300/90">
-                        {project.kind[lang]}
-                      </span>
-                      <h3 className="mt-0.5 font-display text-lg font-bold text-slate-900 transition group-hover:text-cyan-700 dark:text-white dark:group-hover:text-cyan-200">
-                        {project.title}
-                      </h3>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {PERSONAL_PROJECTS.map((project) => (
+            <a
+              key={project.id}
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="reticle-card group flex flex-col rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6] p-5 transition hover:border-[#D94612] dark:border-[#272A30] dark:bg-[#151619] dark:hover:border-[#FF5A1F]"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  {project.iconImage ? (
+                    <img
+                      src={project.iconImage}
+                      alt={project.title}
+                      loading="lazy"
+                      className="h-11 w-11 rounded-[2px] border border-[#D2CFC5] object-cover dark:border-[#272A30]"
+                    />
+                  ) : (
+                    <div className="flex h-11 w-11 items-center justify-center rounded-[2px] border border-[#D2CFC5] bg-[#E7E5DD] font-mono text-[10px] font-semibold tracking-tight text-[#141518] dark:border-[#272A30] dark:bg-[#1B1D21] dark:text-[#ECEEE9]">
+                      {getCodePrefix(project.id).split('_')[0]}
                     </div>
+                  )}
+                  <div>
+                    <span className="block font-mono text-[10px] tracking-wider text-[#D94612] uppercase dark:text-[#FF5A1F]">
+                      {project.kind[lang]}
+                    </span>
+                    <h3 className="mt-0.5 font-display text-lg font-bold text-[#141518] transition group-hover:text-[#D94612] dark:text-[#ECEEE9] dark:group-hover:text-[#FF5A1F]">
+                      {project.title}
+                    </h3>
                   </div>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 text-slate-400 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-cyan-600 dark:text-slate-500 dark:group-hover:text-cyan-300" />
                 </div>
+                <ArrowUpRight className="h-4 w-4 shrink-0 text-[#70757F] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#D94612] dark:text-[#6E747E] dark:group-hover:text-[#FF5A1F]" />
+              </div>
 
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  {project.description[lang]}
-                </p>
+              <p className="mt-4 flex-1 text-sm leading-relaxed text-[#4B4F57] dark:text-[#9A9FA8]">
+                {project.description[lang]}
+              </p>
 
-                <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200 pt-4 dark:border-slate-800/80">
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tech.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-md bg-slate-100 px-2 py-0.5 font-mono text-[11px] text-slate-700 dark:bg-slate-800/80 dark:text-slate-300"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="font-mono text-xs font-medium text-cyan-700 dark:text-cyan-300">
-                    {project.actionLabel[lang]}
-                  </span>
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-[#D2CFC5] pt-3.5 dark:border-[#272A30]">
+                <div className="flex flex-wrap gap-1.5">
+                  {project.tech.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-[2px] bg-[#E7E5DD] px-2 py-0.5 font-mono text-[10px] text-[#4B4F57] dark:bg-[#1B1D21] dark:text-[#9A9FA8]"
+                    >
+                      {item}
+                    </span>
+                  ))}
                 </div>
-              </a>
-            );
-          })}
+                <span className="font-mono text-[11px] font-medium text-[#D94612] dark:text-[#FF5A1F]">
+                  {project.actionLabel[lang]}
+                </span>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>

@@ -106,8 +106,8 @@ export const UI_COPY = {
   },
   hero: {
     badge: {
-      en: 'Open to Game Studio Opportunities',
-      pt: 'Aberto a Oportunidades em Estúdios de Jogos',
+      en: 'AVAILABLE // SÃO PAULO, BR',
+      pt: 'DISPONÍVEL // SÃO PAULO, BR',
     },
     role: {
       en: 'Game Developer & Software Engineer',
@@ -131,18 +131,34 @@ export const UI_COPY = {
     },
     stats: [
       {
+        key: 'TITLES',
         value: '14',
         label: { en: 'Shipped & Built Titles', pt: 'Títulos & Projetos' },
       },
       {
-        value: '6',
+        key: 'PLATFORMS',
+        value: '06',
         label: { en: 'Target Platforms', pt: 'Plataformas Publicadas' },
       },
       {
+        key: 'AWARD',
         value: 'BIG Festival',
-        label: { en: 'Award-Winning Credit', pt: 'Título Premiado' },
+        label: { en: 'Best Game Popular Vote', pt: 'Voto Popular BIG Festival' },
       },
     ],
+    sim: {
+      label: { en: 'SIM_VIEWPORT // BOIDS_2D', pt: 'SIM_VIEWPORT // BOIDS_2D' },
+      agents: { en: 'AGENTS', pt: 'AGENTES' },
+      attract: { en: 'Attract', pt: 'Atrair' },
+      repel: { en: 'Repel', pt: 'Repelir' },
+      gizmos: { en: 'Gizmos', pt: 'Gizmos' },
+      pause: { en: 'Pause', pt: 'Pausar' },
+      play: { en: 'Play', pt: 'Retomar' },
+      pointerHint: {
+        en: 'Move cursor across viewport to steer flock',
+        pt: 'Mova o cursor para direcionar o enxame',
+      },
+    },
     platformsLabel: {
       en: 'Shipped Production Targets',
       pt: 'Plataformas em Produção',
@@ -153,7 +169,7 @@ export const UI_COPY = {
     },
   },
   games: {
-    eyebrow: { en: 'Selected Credits', pt: 'Créditos Selecionados' },
+    eyebrow: { en: '01 // SHIPPED_WORKS', pt: '01 // OBRAS_PUBLICADAS' },
     title: {
       en: 'Shipped Games & Production Work',
       pt: 'Jogos Publicados & Produção',
@@ -191,7 +207,7 @@ export const UI_COPY = {
     },
   },
   about: {
-    eyebrow: { en: 'Engineering Profile', pt: 'Perfil Técnico' },
+    eyebrow: { en: '02 // PROFILE_AND_STACK', pt: '02 // PERFIL_E_STACK' },
     title: { en: 'About & Technical Stack', pt: 'Sobre & Stack Técnica' },
     paragraphs: [
       {
@@ -209,7 +225,7 @@ export const UI_COPY = {
     ],
   },
   projects: {
-    eyebrow: { en: 'Open Source, Tools & Indie', pt: 'Open Source, Ferramentas & Indie' },
+    eyebrow: { en: '03 // TOOLS_AND_REPOS', pt: '03 // FERRAMENTAS_E_REPOS' },
     title: {
       en: 'Personal Projects & Developer Tools',
       pt: 'Projetos Pessoais & Ferramentas',
@@ -220,7 +236,7 @@ export const UI_COPY = {
     },
   },
   education: {
-    eyebrow: { en: 'Credentials & Languages', pt: 'Formação & Credenciais' },
+    eyebrow: { en: '04 // EDUCATION_AND_CERTS', pt: '04 // FORMACAO_E_CERTS' },
     title: {
       en: 'Education, Certificates & Languages',
       pt: 'Formação, Certificados & Idiomas',
@@ -235,7 +251,7 @@ export const UI_COPY = {
     verifyLabel: { en: 'Verify Certificate', pt: 'Verificar Certificado' },
   },
   contact: {
-    eyebrow: { en: 'Get in Touch', pt: 'Contato' },
+    eyebrow: { en: '05 // CONTACT', pt: '05 // CONTATO' },
     title: {
       en: "Let's build your next shipped title.",
       pt: 'Vamos construir seu próximo lançamento.',
