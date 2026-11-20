@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiago C. Costa — Game Developer & Software Engineer</title>
+    <meta
+      name="description"
+      content="Portfolio of Tiago C. Costa — Game Developer & Software Engineer specializing in Unity3D, C#, multi-platform console/PC/mobile porting, multiplayer, AI-powered pipelines, and .NET/Java backends."
+    />
+    <meta property="og:title" content="Tiago C. Costa — Game Developer & Software Engineer" />
+    <meta
+      property="og:description"
+      content="Shipped titles across Nintendo Switch, Xbox, Steam, iOS, Android, and WebGL. Unity3D, C#, .NET, Java multiplayer servers & AI pipelines."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tiagoccosta.github.io/" />
+    <meta property="og:image" content="https://tiagoccosta.github.io/images/portfolio-mombo.jpg" />
+    <meta name="theme-color" content="#07090F" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script>
+      try {
+        var savedTheme = localStorage.getItem('portfolio_theme');
+        if (savedTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+    <!-- TODO: Optional cookieless analytics (e.g., GoatCounter) can be added here later -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-slate-50 text-slate-900 dark:bg-[#07090F] dark:text-slate-100 antialiased selection:bg-cyan-400/25 selection:text-cyan-900 dark:selection:text-cyan-200 transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
