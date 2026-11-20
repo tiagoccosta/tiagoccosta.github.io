@@ -8,12 +8,14 @@ import {
   Language,
   UI_COPY,
 } from '../data/portfolio';
+import { triggerBurstFromElement } from '../utils/fxBus';
 
 interface GamesSectionProps {
   lang: Language;
+  microBurstsEnabled: boolean;
 }
 
-export function GamesSection({ lang }: GamesSectionProps) {
+export function GamesSection({ lang, microBurstsEnabled }: GamesSectionProps) {
   const [activeCategory, setActiveCategory] = useState<GameCategory>('all');
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [selectedGame, setSelectedGame] = useState<GameWork | null>(null);
@@ -97,10 +99,19 @@ export function GamesSection({ lang }: GamesSectionProps) {
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/15 lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-black/20" />
 
                   {currentFeatured.highlight && (
-                    <div className="absolute top-3.5 left-3.5 inline-flex items-center gap-1.5 rounded-full border border-[#C9A24D]/50 bg-[#101214]/85 px-3 py-1 text-xs font-semibold text-[#E2C275] backdrop-blur-md">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (microBurstsEnabled) {
+                          triggerBurstFromElement(e.currentTarget, 'gold', 18);
+                        }
+                      }}
+                      className="absolute top-3.5 left-3.5 inline-flex items-center gap-1.5 rounded-full border border-[#C9A24D]/50 bg-[#101214]/85 px-3 py-1 text-xs font-semibold text-[#E2C275] backdrop-blur-md transition hover:border-[#E2C275]"
+                    >
                       <Award className="h-3.5 w-3.5 text-[#C9A24D]" />
                       {currentFeatured.highlight[lang]}
-                    </div>
+                    </button>
                   )}
                 </div>
 
@@ -155,7 +166,16 @@ export function GamesSection({ lang }: GamesSectionProps) {
                     <button
                       key={item.id}
                       type="button"
-                      onClick={() => setFeaturedIndex(idx)}
+                      onClick={(e) => {
+                        setFeaturedIndex(idx);
+                        if (microBurstsEnabled && idx !== featuredIndex) {
+                          triggerBurstFromElement(
+                            e.currentTarget,
+                            item.highlight ? 'gold' : 'brand',
+                            15
+                          );
+                        }
+                      }}
                       className={`group relative flex items-center gap-2.5 overflow-hidden rounded-lg border p-2 text-left transition ${
                         active
                           ? 'border-[#2563EB]/60 bg-white shadow-xs dark:border-[#14B8A6]/60 dark:bg-[#1A1E24]'

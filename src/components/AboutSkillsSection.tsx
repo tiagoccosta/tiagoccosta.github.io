@@ -1,18 +1,27 @@
-import { Language, SKILL_GROUPS, UI_COPY } from '../data/portfolio';
+import { Language, SKILL_GROUPS, Theme, UI_COPY } from '../data/portfolio';
+import { SpringMeshCanvas } from './SpringMeshCanvas';
 
 interface AboutSkillsSectionProps {
   lang: Language;
+  theme: Theme;
+  showSpringMesh: boolean;
 }
 
-export function AboutSkillsSection({ lang }: AboutSkillsSectionProps) {
+export function AboutSkillsSection({
+  lang,
+  theme,
+  showSpringMesh,
+}: AboutSkillsSectionProps) {
   const copy = UI_COPY.about;
 
   return (
     <section
       id="about"
-      className="border-t border-slate-200/80 bg-white/60 py-16 sm:py-22 dark:border-white/8 dark:bg-[#14171B]/60"
+      className="relative overflow-hidden border-t border-slate-200/80 bg-white/60 py-16 sm:py-22 dark:border-white/8 dark:bg-[#14171B]/60"
     >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      {showSpringMesh && <SpringMeshCanvas theme={theme} />}
+
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div>
           <p className="text-xs font-semibold tracking-widest text-[#2563EB] uppercase dark:text-[#14B8A6]">
             {copy.eyebrow[lang]}
@@ -33,7 +42,7 @@ export function AboutSkillsSection({ lang }: AboutSkillsSectionProps) {
             {SKILL_GROUPS.map((group) => (
               <div
                 key={group.id}
-                className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-white/8 dark:bg-[#16191D]"
+                className="relative overflow-hidden rounded-xl border border-slate-200 bg-white/92 p-5 shadow-xs backdrop-blur-xs dark:border-white/8 dark:bg-[#16191D]/92"
               >
                 <div className="absolute top-0 right-0 left-0 h-0.5 bg-gradient-to-r from-[#2563EB] to-[#0D9488] opacity-80" />
 

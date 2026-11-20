@@ -46,6 +46,7 @@ export function ParticleFieldCanvas({ theme }: ParticleFieldCanvasProps) {
     let rafId = 0;
     let lastTime = performance.now();
     let elapsed = 0;
+    let isVisible = true;
 
     const pointer = {
       x: 0,
@@ -199,10 +200,25 @@ export function ParticleFieldCanvas({ theme }: ParticleFieldCanvasProps) {
       pointer.active = false;
     };
 
-    const observer = new ResizeObserver(() => resize());
+    const resizeObserver = new ResizeObserver(() => resize());
     if (canvas.parentElement) {
-      observer.observe(canvas.parentElement);
+      resizeObserver.observe(canvas.parentElement);
     }
+
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        const wasVisible = isVisible;
+        isVisible = entry.isIntersecting;
+        if (isVisible && !wasVisible && !prefersReducedMotion && rafId === 0) {
+          lastTime = performance.now();
+          rafId = window.requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.01 }
+    );
+    intersectionObserver.observe(canvas);
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
     document.addEventListener('mouseleave', handlePointerLeave);
@@ -210,25 +226,31 @@ export function ParticleFieldCanvas({ theme }: ParticleFieldCanvasProps) {
 
     if (prefersReducedMotion) {
       return () => {
-        observer.disconnect();
+        resizeObserver.disconnect();
+        intersectionObserver.disconnect();
         window.removeEventListener('pointermove', handlePointerMove);
         document.removeEventListener('mouseleave', handlePointerLeave);
       };
     }
 
-    const tick = (now: number) => {
+    function tick(now: number) {
+      if (!isVisible) {
+        rafId = 0;
+        return;
+      }
       const dt = Math.min(Math.max((now - lastTime) / 1000, 0), 0.05);
       lastTime = now;
       step(dt);
       draw();
       rafId = window.requestAnimationFrame(tick);
-    };
+    }
 
     rafId = window.requestAnimationFrame(tick);
 
     return () => {
-      window.cancelAnimationFrame(rafId);
-      observer.disconnect();
+      if (rafId) window.cancelAnimationFrame(rafId);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       window.removeEventListener('pointermove', handlePointerMove);
       document.removeEventListener('mouseleave', handlePointerLeave);
     };

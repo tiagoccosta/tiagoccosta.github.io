@@ -1,8 +1,11 @@
 import { ArrowUpRight, Boxes, Brain, Network } from 'lucide-react';
-import { Language, PERSONAL_PROJECTS, UI_COPY } from '../data/portfolio';
+import { Language, PERSONAL_PROJECTS, Theme, UI_COPY } from '../data/portfolio';
+import { SignalNetworkCanvas } from './SignalNetworkCanvas';
 
 interface ProjectsSectionProps {
   lang: Language;
+  theme: Theme;
+  showSignalNetwork: boolean;
 }
 
 function getIcon(id: string) {
@@ -11,15 +14,21 @@ function getIcon(id: string) {
   return Boxes;
 }
 
-export function ProjectsSection({ lang }: ProjectsSectionProps) {
+export function ProjectsSection({
+  lang,
+  theme,
+  showSignalNetwork,
+}: ProjectsSectionProps) {
   const copy = UI_COPY.projects;
 
   return (
     <section
       id="projects"
-      className="border-t border-slate-200/80 py-16 sm:py-22 dark:border-white/8"
+      className="relative overflow-hidden border-t border-slate-200/80 py-16 sm:py-22 dark:border-white/8"
     >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      {showSignalNetwork && <SignalNetworkCanvas theme={theme} />}
+
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div>
           <p className="text-xs font-semibold tracking-widest text-[#2563EB] uppercase dark:text-[#14B8A6]">
             {copy.eyebrow[lang]}
@@ -41,7 +50,7 @@ export function ProjectsSection({ lang }: ProjectsSectionProps) {
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-5 transition hover:border-[#2563EB]/50 hover:shadow-sm dark:border-white/8 dark:bg-[#16191D] dark:hover:border-[#14B8A6]/50"
+                className="group flex items-start gap-4 rounded-xl border border-slate-200 bg-white/92 p-5 backdrop-blur-xs transition hover:border-[#2563EB]/50 hover:shadow-sm dark:border-white/8 dark:bg-[#16191D]/92 dark:hover:border-[#14B8A6]/50"
               >
                 {project.iconImage ? (
                   <img

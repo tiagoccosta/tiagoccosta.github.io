@@ -6,7 +6,13 @@ interface BoidsCanvasProps {
   paused: boolean;
   showGizmos: boolean;
   interactionMode: 'attract' | 'repel';
+  enableTrailsAndObstacles: boolean;
   onStatsUpdate?: (stats: { fps: number; count: number }) => void;
+}
+
+interface TrailPoint {
+  x: number;
+  y: number;
 }
 
 interface Boid {
@@ -16,6 +22,14 @@ interface Boid {
   vy: number;
   isScout: boolean;
   scoutTone: 'cobalt' | 'teal';
+  trail: TrailPoint[];
+}
+
+interface ObstacleRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
 }
 
 interface ImpulseRipple {
@@ -31,6 +45,8 @@ const SEPARATION_RADIUS = 28;
 const LINK_RADIUS = 52;
 const POINTER_RADIUS = 165;
 const IMPULSE_RADIUS = 180;
+const OBSTACLE_PAD = 24;
+const TRAIL_LENGTH = 7;
 const MIN_SPEED = 52;
 const MAX_SPEED = 128;
 
@@ -39,6 +55,7 @@ export function BoidsCanvas({
   paused,
   showGizmos,
   interactionMode,
+  enableTrailsAndObstacles,
   onStatsUpdate,
 }: BoidsCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -47,14 +64,21 @@ export function BoidsCanvas({
     paused,
     showGizmos,
     interactionMode,
+    enableTrailsAndObstacles,
   });
   const onStatsRef = useRef(onStatsUpdate);
   const drawFrameRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    stateRef.current = { theme, paused, showGizmos, interactionMode };
+    stateRef.current = {
+      theme,
+      paused,
+      showGizmos,
+      interactionMode,
+      enableTrailsAndObstacles,
+    };
     drawFrameRef.current?.();
-  }, [theme, paused, showGizmos, interactionMode]);
+  }, [theme, paused, showGizmos, interactionMode, enableTrailsAndObstacles]);
 
   useEffect(() => {
     onStatsRef.current = onStatsUpdate;
@@ -74,11 +98,14 @@ export function BoidsCanvas({
     let height = 0;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let boids: Boid[] = [];
+    let obstacles: ObstacleRect[] = [];
     let ripples: ImpulseRipple[] = [];
     let rafId = 0;
     let lastTime = performance.now();
     let statsTimer = 0;
+    let obstacleTimer = 0;
     let frameCounter = 0;
+    let isVisible = true;
 
     const pointer = {
       x: 0,
@@ -88,6 +115,28 @@ export function BoidsCanvas({
 
     const targetCountForWidth = (w: number) => (w < 640 ? 26 : w < 1024 ? 42 : 58);
 
+    const measureObstacles = () => {
+      const parent = canvas.parentElement;
+      if (!parent) {
+        obstacles = [];
+        return;
+      }
+      const parentRect = parent.getBoundingClientRect();
+      const els = parent.querySelectorAll<HTMLElement>('[data-boid-obstacle="true"]');
+      const next: ObstacleRect[] = [];
+      for (const el of els) {
+        const r = el.getBoundingClientRect();
+        if (r.width <= 0 || r.height <= 0) continue;
+        next.push({
+          x: r.left - parentRect.left,
+          y: r.top - parentRect.top,
+          w: r.width,
+          h: r.height,
+        });
+      }
+      obstacles = next;
+    };
+
     const seedBoids = (w: number, h: number) => {
       const count = targetCountForWidth(w);
       const seeded: Boid[] = [];
@@ -95,13 +144,16 @@ export function BoidsCanvas({
         const angle = (i * 2.39996) % (Math.PI * 2);
         const speed = MIN_SPEED + ((i * 19) % 45);
         const isScout = i % 5 === 0;
+        const x = (((i * 137.5) % 100) / 100) * Math.max(w, 1);
+        const y = (((i * 89.3 + 23) % 100) / 100) * Math.max(h, 1);
         seeded.push({
-          x: (((i * 137.5) % 100) / 100) * Math.max(w, 1),
-          y: (((i * 89.3 + 23) % 100) / 100) * Math.max(h, 1),
+          x,
+          y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           isScout,
           scoutTone: (i / 5) % 2 === 0 ? 'cobalt' : 'teal',
+          trail: [{ x, y }],
         });
       }
       boids = seeded;
@@ -131,14 +183,15 @@ export function BoidsCanvas({
       }
       width = nextW;
       height = nextH;
+      measureObstacles();
       draw();
     };
 
     const step = (dt: number) => {
-      const { interactionMode: mode } = stateRef.current;
+      const { interactionMode: mode, enableTrailsAndObstacles: useFx } = stateRef.current;
       const margin = 44;
       const turnForce = 185;
-      const maxAccel = 230;
+      const maxAccel = 260;
 
       for (let i = ripples.length - 1; i >= 0; i--) {
         const r = ripples[i];
@@ -203,6 +256,34 @@ export function BoidsCanvas({
         if (b.y < margin) ay += turnForce * ((margin - b.y) / margin);
         else if (b.y > height - margin) ay -= turnForce * ((b.y - (height - margin)) / margin);
 
+        // Smooth DOM obstacle avoidance
+        if (useFx && obstacles.length > 0) {
+          for (const obs of obstacles) {
+            const clampedX = Math.max(obs.x, Math.min(b.x, obs.x + obs.w));
+            const clampedY = Math.max(obs.y, Math.min(b.y, obs.y + obs.h));
+            const dx = b.x - clampedX;
+            const dy = b.y - clampedY;
+            const distSq = dx * dx + dy * dy;
+            if (distSq < OBSTACLE_PAD * OBSTACLE_PAD) {
+              if (distSq > 0.01) {
+                const dist = Math.sqrt(distSq);
+                const strength = ((OBSTACLE_PAD - dist) / OBSTACLE_PAD) * 320;
+                ax += (dx / dist) * strength;
+                ay += (dy / dist) * strength;
+              } else {
+                // Inside rect: push toward nearest edge
+                const cx = obs.x + obs.w * 0.5;
+                const cy = obs.y + obs.h * 0.5;
+                const pdx = b.x - cx;
+                const pdy = b.y - cy;
+                const plen = Math.hypot(pdx, pdy) || 1;
+                ax += (pdx / plen) * 340;
+                ay += (pdy / plen) * 340;
+              }
+            }
+          }
+        }
+
         if (pointer.active) {
           const pdx = pointer.x - b.x;
           const pdy = pointer.y - b.y;
@@ -243,12 +324,25 @@ export function BoidsCanvas({
         if (b.x > width) b.x = width;
         if (b.y < 0) b.y = 0;
         if (b.y > height) b.y = height;
+
+        if (useFx) {
+          b.trail.push({ x: b.x, y: b.y });
+          if (b.trail.length > TRAIL_LENGTH) {
+            b.trail.shift();
+          }
+        } else if (b.trail.length > 1) {
+          b.trail = [{ x: b.x, y: b.y }];
+        }
       }
     };
 
     const draw = () => {
       if (width === 0 || height === 0) return;
-      const { theme: currentTheme, showGizmos: gizmos } = stateRef.current;
+      const {
+        theme: currentTheme,
+        showGizmos: gizmos,
+        enableTrailsAndObstacles: useFx,
+      } = stateRef.current;
       const isDark = currentTheme === 'dark';
 
       const regularFill = isDark
@@ -291,6 +385,34 @@ export function BoidsCanvas({
       }
       ctx.stroke();
 
+      // Ribbon trails
+      if (useFx) {
+        for (const b of boids) {
+          if (b.trail.length < 2) continue;
+          for (let t = 1; t < b.trail.length; t++) {
+            const p0 = b.trail[t - 1];
+            const p1 = b.trail[t];
+            const alpha = (t / b.trail.length) * (b.isScout ? 0.36 : 0.14);
+            ctx.lineWidth = b.isScout ? 1.4 : 1;
+            ctx.strokeStyle = !b.isScout
+              ? isDark
+                ? `rgba(243, 245, 247, ${alpha.toFixed(3)})`
+                : `rgba(17, 21, 27, ${alpha.toFixed(3)})`
+              : b.scoutTone === 'cobalt'
+              ? isDark
+                ? `rgba(59, 130, 246, ${alpha.toFixed(3)})`
+                : `rgba(37, 99, 235, ${alpha.toFixed(3)})`
+              : isDark
+              ? `rgba(20, 184, 166, ${alpha.toFixed(3)})`
+              : `rgba(13, 148, 136, ${alpha.toFixed(3)})`;
+            ctx.beginPath();
+            ctx.moveTo(p0.x, p0.y);
+            ctx.lineTo(p1.x, p1.y);
+            ctx.stroke();
+          }
+        }
+      }
+
       // Click / Tap impulse ripples
       for (const r of ripples) {
         ctx.save();
@@ -304,10 +426,24 @@ export function BoidsCanvas({
         ctx.restore();
       }
 
-      // Optional velocity & perception gizmos
+      // Optional velocity, perception & obstacle gizmos
       if (gizmos) {
         ctx.save();
         ctx.lineWidth = 1;
+
+        if (useFx && obstacles.length > 0) {
+          ctx.setLineDash([4, 4]);
+          ctx.strokeStyle = gizmoStroke;
+          for (const obs of obstacles) {
+            ctx.strokeRect(
+              obs.x - OBSTACLE_PAD * 0.4,
+              obs.y - OBSTACLE_PAD * 0.4,
+              obs.w + OBSTACLE_PAD * 0.8,
+              obs.h + OBSTACLE_PAD * 0.8
+            );
+          }
+        }
+
         for (const b of boids) {
           if (!b.isScout) continue;
           ctx.setLineDash([3, 4]);
@@ -423,10 +559,25 @@ export function BoidsCanvas({
       pointer.active = false;
     };
 
-    const observer = new ResizeObserver(() => resize());
+    const resizeObserver = new ResizeObserver(() => resize());
     if (canvas.parentElement) {
-      observer.observe(canvas.parentElement);
+      resizeObserver.observe(canvas.parentElement);
     }
+
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        const wasVisible = isVisible;
+        isVisible = entry.isIntersecting;
+        if (isVisible && !wasVisible && !prefersReducedMotion && rafId === 0) {
+          lastTime = performance.now();
+          rafId = window.requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.01 }
+    );
+    intersectionObserver.observe(canvas);
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
     window.addEventListener('pointerdown', handlePointerDown, { passive: true });
@@ -435,17 +586,29 @@ export function BoidsCanvas({
 
     if (prefersReducedMotion) {
       return () => {
-        observer.disconnect();
+        resizeObserver.disconnect();
+        intersectionObserver.disconnect();
         window.removeEventListener('pointermove', handlePointerMove);
         window.removeEventListener('pointerdown', handlePointerDown);
         document.removeEventListener('mouseleave', handlePointerLeave);
       };
     }
 
-    const tick = (now: number) => {
+    function tick(now: number) {
+      if (!isVisible) {
+        rafId = 0;
+        return;
+      }
+
       const rawDt = (now - lastTime) / 1000;
       lastTime = now;
       const dt = Math.min(Math.max(rawDt, 0), 0.05);
+
+      obstacleTimer += rawDt;
+      if (obstacleTimer >= 1.0) {
+        measureObstacles();
+        obstacleTimer = 0;
+      }
 
       if (!stateRef.current.paused) {
         step(dt);
@@ -464,13 +627,14 @@ export function BoidsCanvas({
       }
 
       rafId = window.requestAnimationFrame(tick);
-    };
+    }
 
     rafId = window.requestAnimationFrame(tick);
 
     return () => {
-      window.cancelAnimationFrame(rafId);
-      observer.disconnect();
+      if (rafId) window.cancelAnimationFrame(rafId);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('mouseleave', handlePointerLeave);

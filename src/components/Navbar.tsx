@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Menu, Moon, Sun, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Menu, Moon, Sparkles, Sun, X } from 'lucide-react';
 import { Language, Theme, UI_COPY } from '../data/portfolio';
+import { FxSettings } from '../utils/fxBus';
 
 interface NavbarProps {
   lang: Language;
@@ -8,7 +9,19 @@ interface NavbarProps {
   theme: Theme;
   onToggleTheme: () => void;
   hasExperience: boolean;
+  fx: FxSettings;
+  onToggleFx: (key: keyof FxSettings) => void;
+  onSetAllFx: (enabled: boolean) => void;
 }
+
+const FX_KEYS: Array<keyof FxSettings> = [
+  'boidsTrailsObstacles',
+  'flowField',
+  'springMesh',
+  'signalNetwork',
+  'microBursts',
+  'contactParticles',
+];
 
 export function Navbar({
   lang,
@@ -16,8 +29,13 @@ export function Navbar({
   theme,
   onToggleTheme,
   hasExperience,
+  fx,
+  onToggleFx,
+  onSetAllFx,
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [fxOpen, setFxOpen] = useState(false);
+  const fxContainerRef = useRef<HTMLDivElement | null>(null);
 
   const navItems = [
     { href: '#games', label: UI_COPY.nav.games[lang] },
@@ -30,9 +48,28 @@ export function Navbar({
     { href: '#contact', label: UI_COPY.nav.contact[lang] },
   ];
 
-  const handleLinkClick = () => {
-    setMobileOpen(false);
-  };
+  useEffect(() => {
+    if (!fxOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setFxOpen(false);
+      }
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node | null;
+      if (fxContainerRef.current && target && !fxContainerRef.current.contains(target)) {
+        setFxOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [fxOpen]);
+
+  const activeCount = FX_KEYS.filter((k) => fx[k]).length;
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-[#F7F8FA]/85 backdrop-blur-xl transition-colors dark:border-white/8 dark:bg-[#101214]/85">
@@ -100,6 +137,75 @@ export function Navbar({
             </button>
           </div>
 
+          <div ref={fxContainerRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setFxOpen((prev) => !prev)}
+              aria-expanded={fxOpen}
+              aria-label={UI_COPY.fx.title[lang]}
+              className={`inline-flex h-9 items-center gap-1.5 rounded-lg border px-2.5 text-xs font-medium transition ${
+                fxOpen || activeCount > 0
+                  ? 'border-[#2563EB]/40 bg-white text-[#2563EB] dark:border-[#14B8A6]/40 dark:bg-[#16191D] dark:text-[#14B8A6]'
+                  : 'border-slate-200 bg-white text-slate-600 dark:border-white/10 dark:bg-[#16191D] dark:text-slate-400'
+              }`}
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">{UI_COPY.fx.button[lang]}</span>
+            </button>
+
+            {fxOpen && (
+              <div className="absolute right-0 mt-2 w-72 rounded-xl border border-slate-200 bg-white p-4 shadow-xl dark:border-white/12 dark:bg-[#16191D]">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 className="font-display text-sm font-bold text-[#11151B] dark:text-[#F3F5F7]">
+                      {UI_COPY.fx.title[lang]}
+                    </h3>
+                    <p className="mt-0.5 text-[11px] text-slate-500 dark:text-slate-400">
+                      {UI_COPY.fx.subtitle[lang]}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-3 space-y-2 border-t border-slate-200 pt-3 dark:border-white/8">
+                  {FX_KEYS.map((key) => {
+                    const checked = fx[key];
+                    return (
+                      <label
+                        key={key}
+                        className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-xs text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/5"
+                      >
+                        <span>{UI_COPY.fx.items[key][lang]}</span>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => onToggleFx(key)}
+                          className="h-4 w-4 accent-[#2563EB] dark:accent-[#14B8A6]"
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-3 flex gap-2 border-t border-slate-200 pt-3 dark:border-white/8">
+                  <button
+                    type="button"
+                    onClick={() => onSetAllFx(true)}
+                    className="flex-1 rounded-md bg-gradient-to-r from-[#2563EB] to-[#0D9488] px-2.5 py-1.5 text-xs font-semibold text-white transition hover:brightness-110"
+                  >
+                    {UI_COPY.fx.allOn[lang]}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onSetAllFx(false)}
+                    className="flex-1 rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100 dark:border-white/10 dark:bg-[#111418] dark:text-slate-300 dark:hover:bg-white/5"
+                  >
+                    {UI_COPY.fx.allOff[lang]}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <button
             type="button"
             onClick={onToggleTheme}
@@ -136,7 +242,7 @@ export function Navbar({
               <a
                 key={item.href}
                 href={item.href}
-                onClick={handleLinkClick}
+                onClick={() => setMobileOpen(false)}
                 className="flex min-h-[44px] items-center rounded-lg px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-200/70 hover:text-[#2563EB] dark:text-slate-200 dark:hover:bg-white/5 dark:hover:text-[#14B8A6]"
               >
                 {item.label}

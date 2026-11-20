@@ -13,9 +13,10 @@ import { GitHubIcon, LinkedInIcon, UnityIcon } from './BrandIcons';
 interface HeroProps {
   lang: Language;
   theme: Theme;
+  enableTrailsAndObstacles: boolean;
 }
 
-export function Hero({ lang, theme }: HeroProps) {
+export function Hero({ lang, theme, enableTrailsAndObstacles }: HeroProps) {
   const [paused, setPaused] = useState(false);
   const [showGizmos, setShowGizmos] = useState(false);
   const [interactionMode, setInteractionMode] = useState<'attract' | 'repel'>('attract');
@@ -33,12 +34,16 @@ export function Hero({ lang, theme }: HeroProps) {
         paused={paused}
         showGizmos={showGizmos}
         interactionMode={interactionMode}
+        enableTrailsAndObstacles={enableTrailsAndObstacles}
         onStatsUpdate={setSimStats}
       />
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20 sm:pb-12 lg:px-8">
         <div className="max-w-3xl">
-          <div className="flex flex-wrap items-center gap-4">
+          <div
+            data-boid-obstacle="true"
+            className="inline-flex flex-wrap items-center gap-4"
+          >
             <img
               src="images/perfil.jpg"
               alt="Tiago C. Costa"
@@ -78,7 +83,10 @@ export function Hero({ lang, theme }: HeroProps) {
             {SHIPPED_PLATFORMS.join(' · ')}
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div
+            data-boid-obstacle="true"
+            className="mt-8 inline-flex flex-wrap items-center gap-3"
+          >
             <a
               href="#games"
               className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-gradient-to-r from-[#2563EB] to-[#0D9488] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-110"

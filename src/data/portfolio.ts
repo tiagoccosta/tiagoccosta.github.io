@@ -253,6 +253,42 @@ export const UI_COPY = {
       pt: 'Tiago C. Costa. Todos os direitos reservados.',
     },
   },
+  fx: {
+    button: { en: 'FX', pt: 'Efeitos' },
+    title: { en: 'Interactive Effects', pt: 'Efeitos Interativos' },
+    subtitle: {
+      en: 'Toggle each simulation live to compare.',
+      pt: 'Ative ou desative para testar ao vivo.',
+    },
+    items: {
+      boidsTrailsObstacles: {
+        en: 'Boids trails & DOM avoidance',
+        pt: 'Boids: rastros e desvio do layout',
+      },
+      flowField: {
+        en: 'Flow-field section divider',
+        pt: 'Divisor fluido (Flow Field)',
+      },
+      springMesh: {
+        en: 'Spring mesh (About)',
+        pt: 'Malha elástica (Sobre)',
+      },
+      signalNetwork: {
+        en: 'Signal network (Tools)',
+        pt: 'Rede neural/sinais (Projetos)',
+      },
+      microBursts: {
+        en: 'UI click micro-bursts',
+        pt: 'Partículas em cliques (Game Juice)',
+      },
+      contactParticles: {
+        en: 'Contact particle field',
+        pt: 'Partículas no Contato',
+      },
+    },
+    allOn: { en: 'All On', pt: 'Ligar todos' },
+    allOff: { en: 'Minimal', pt: 'Mínimo' },
+  },
 } as const;
 
 export const FEATURED_GAME_IDS = [

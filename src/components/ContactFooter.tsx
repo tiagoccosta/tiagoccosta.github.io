@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Check, Copy, Mail, MapPin } from 'lucide-react';
 import {
   getContactEmail,
@@ -7,21 +7,34 @@ import {
   Theme,
   UI_COPY,
 } from '../data/portfolio';
+import { triggerBurstFromElement } from '../utils/fxBus';
 import { GitHubIcon, LinkedInIcon, UnityIcon } from './BrandIcons';
 import { ParticleFieldCanvas } from './ParticleFieldCanvas';
 
 interface ContactFooterProps {
   lang: Language;
   theme: Theme;
+  showParticles: boolean;
+  microBurstsEnabled: boolean;
 }
 
-export function ContactFooter({ lang, theme }: ContactFooterProps) {
+export function ContactFooter({
+  lang,
+  theme,
+  showParticles,
+  microBurstsEnabled,
+}: ContactFooterProps) {
   const [copied, setCopied] = useState(false);
   const copy = UI_COPY.contact;
   const heroCopy = UI_COPY.hero;
   const email = getContactEmail();
 
-  const handleCopyEmail = async () => {
+  const handleCopyEmail = async (event: MouseEvent<HTMLButtonElement>) => {
+    const buttonEl = event.currentTarget;
+    if (microBurstsEnabled) {
+      triggerBurstFromElement(buttonEl, 'brand', 20);
+    }
+
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(email);
@@ -51,7 +64,7 @@ export function ContactFooter({ lang, theme }: ContactFooterProps) {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10 dark:border-white/10 dark:bg-[#16191D]">
             <div className="absolute top-0 right-0 left-0 h-0.5 bg-gradient-to-r from-[#2563EB] via-[#0D9488] to-[#2563EB]" />
-            <ParticleFieldCanvas theme={theme} />
+            {showParticles && <ParticleFieldCanvas theme={theme} />}
 
             <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-7">
