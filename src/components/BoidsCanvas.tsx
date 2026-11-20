@@ -15,13 +15,23 @@ interface Boid {
   vx: number;
   vy: number;
   isScout: boolean;
+  scoutTone: 'cobalt' | 'teal';
+}
+
+interface ImpulseRipple {
+  x: number;
+  y: number;
+  radius: number;
+  maxRadius: number;
+  alpha: number;
 }
 
 const PERCEPTION_RADIUS = 68;
 const SEPARATION_RADIUS = 28;
 const LINK_RADIUS = 52;
 const POINTER_RADIUS = 165;
-const MIN_SPEED = 54;
+const IMPULSE_RADIUS = 180;
+const MIN_SPEED = 52;
 const MAX_SPEED = 128;
 
 export function BoidsCanvas({
@@ -64,6 +74,7 @@ export function BoidsCanvas({
     let height = 0;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let boids: Boid[] = [];
+    let ripples: ImpulseRipple[] = [];
     let rafId = 0;
     let lastTime = performance.now();
     let statsTimer = 0;
@@ -75,7 +86,7 @@ export function BoidsCanvas({
       active: false,
     };
 
-    const targetCountForWidth = (w: number) => (w < 640 ? 34 : w < 1024 ? 48 : 64);
+    const targetCountForWidth = (w: number) => (w < 640 ? 26 : w < 1024 ? 42 : 58);
 
     const seedBoids = (w: number, h: number) => {
       const count = targetCountForWidth(w);
@@ -83,12 +94,14 @@ export function BoidsCanvas({
       for (let i = 0; i < count; i++) {
         const angle = (i * 2.39996) % (Math.PI * 2);
         const speed = MIN_SPEED + ((i * 19) % 45);
+        const isScout = i % 5 === 0;
         seeded.push({
           x: (((i * 137.5) % 100) / 100) * Math.max(w, 1),
           y: (((i * 89.3 + 23) % 100) / 100) * Math.max(h, 1),
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          isScout: i % 6 === 0,
+          isScout,
+          scoutTone: (i / 5) % 2 === 0 ? 'cobalt' : 'teal',
         });
       }
       boids = seeded;
@@ -125,7 +138,16 @@ export function BoidsCanvas({
       const { interactionMode: mode } = stateRef.current;
       const margin = 44;
       const turnForce = 185;
-      const maxAccel = 220;
+      const maxAccel = 230;
+
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const r = ripples[i];
+        r.radius += 260 * dt;
+        r.alpha = Math.max(0, 0.65 * (1 - r.radius / r.maxRadius));
+        if (r.radius >= r.maxRadius || r.alpha <= 0.01) {
+          ripples.splice(i, 1);
+        }
+      }
 
       for (let i = 0; i < boids.length; i++) {
         const b = boids[i];
@@ -189,7 +211,7 @@ export function BoidsCanvas({
             const pDist = Math.sqrt(pDistSq);
             const falloff = 1 - pDist / POINTER_RADIUS;
             const sign = mode === 'attract' ? 1 : -1;
-            const force = sign * 260 * falloff;
+            const force = sign * 255 * falloff;
             ax += (pdx / pDist) * force;
             ay += (pdy / pDist) * force;
           }
@@ -226,26 +248,27 @@ export function BoidsCanvas({
 
     const draw = () => {
       if (width === 0 || height === 0) return;
-      const { theme: currentTheme, showGizmos: gizmos, interactionMode: mode } =
-        stateRef.current;
+      const { theme: currentTheme, showGizmos: gizmos } = stateRef.current;
       const isDark = currentTheme === 'dark';
 
-      const accentColor = isDark ? '#FF5A1F' : '#D94612';
       const regularFill = isDark
-        ? 'rgba(236, 238, 233, 0.34)'
-        : 'rgba(20, 21, 24, 0.30)';
-      const scoutFill = isDark
-        ? 'rgba(255, 90, 31, 0.85)'
-        : 'rgba(217, 70, 18, 0.85)';
+        ? 'rgba(243, 245, 247, 0.30)'
+        : 'rgba(17, 21, 27, 0.24)';
+      const cobaltFill = isDark
+        ? 'rgba(59, 130, 246, 0.78)'
+        : 'rgba(37, 99, 235, 0.78)';
+      const tealFill = isDark
+        ? 'rgba(20, 184, 166, 0.78)'
+        : 'rgba(13, 148, 136, 0.78)';
       const tetherStroke = isDark
-        ? 'rgba(236, 238, 233, 0.085)'
-        : 'rgba(20, 21, 24, 0.08)';
+        ? 'rgba(148, 163, 184, 0.08)'
+        : 'rgba(17, 21, 27, 0.07)';
       const gizmoStroke = isDark
-        ? 'rgba(255, 90, 31, 0.28)'
-        : 'rgba(217, 70, 18, 0.28)';
+        ? 'rgba(20, 184, 166, 0.28)'
+        : 'rgba(13, 148, 136, 0.28)';
       const vectorStroke = isDark
-        ? 'rgba(255, 90, 31, 0.55)'
-        : 'rgba(217, 70, 18, 0.55)';
+        ? 'rgba(59, 130, 246, 0.55)'
+        : 'rgba(37, 99, 235, 0.55)';
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
@@ -268,7 +291,20 @@ export function BoidsCanvas({
       }
       ctx.stroke();
 
-      // Debug spatial gizmos
+      // Click / Tap impulse ripples
+      for (const r of ripples) {
+        ctx.save();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = isDark
+          ? `rgba(20, 184, 166, ${r.alpha.toFixed(3)})`
+          : `rgba(37, 99, 235, ${r.alpha.toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Optional velocity & perception gizmos
       if (gizmos) {
         ctx.save();
         ctx.lineWidth = 1;
@@ -294,41 +330,28 @@ export function BoidsCanvas({
           ctx.beginPath();
           ctx.arc(pointer.x, pointer.y, POINTER_RADIUS, 0, Math.PI * 2);
           ctx.stroke();
-
-          ctx.setLineDash([]);
-          ctx.strokeStyle = accentColor;
-          ctx.beginPath();
-          ctx.moveTo(pointer.x - 6, pointer.y);
-          ctx.lineTo(pointer.x + 6, pointer.y);
-          ctx.moveTo(pointer.x, pointer.y - 6);
-          ctx.lineTo(pointer.x, pointer.y + 6);
-          ctx.stroke();
-
-          ctx.font = "10px 'IBM Plex Mono', monospace";
-          ctx.fillStyle = vectorStroke;
-          ctx.fillText(
-            mode === 'attract' ? 'FORCE:ATTRACT' : 'FORCE:REPEL',
-            pointer.x + 10,
-            pointer.y - 8
-          );
         }
         ctx.restore();
       }
 
-      // Draw directional boid chevrons
+      // Directional boid chevrons
       for (const b of boids) {
         const angle = Math.atan2(b.vy, b.vx);
-        const size = b.isScout ? 6.5 : 5.2;
+        const size = b.isScout ? 6.4 : 5.1;
         ctx.save();
         ctx.translate(b.x, b.y);
         ctx.rotate(angle);
         ctx.beginPath();
         ctx.moveTo(size, 0);
-        ctx.lineTo(-size * 0.85, size * 0.58);
+        ctx.lineTo(-size * 0.85, size * 0.56);
         ctx.lineTo(-size * 0.4, 0);
-        ctx.lineTo(-size * 0.85, -size * 0.58);
+        ctx.lineTo(-size * 0.85, -size * 0.56);
         ctx.closePath();
-        ctx.fillStyle = b.isScout ? scoutFill : regularFill;
+        ctx.fillStyle = !b.isScout
+          ? regularFill
+          : b.scoutTone === 'cobalt'
+          ? cobaltFill
+          : tealFill;
         ctx.fill();
         ctx.restore();
       }
@@ -353,6 +376,49 @@ export function BoidsCanvas({
       }
     };
 
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('a, button, input, select, textarea, [role="button"]')) {
+        return;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      const inside =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+      if (!inside) return;
+
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      ripples.push({
+        x,
+        y,
+        radius: 6,
+        maxRadius: 195,
+        alpha: 0.6,
+      });
+
+      for (const b of boids) {
+        const dx = b.x - x;
+        const dy = b.y - y;
+        const distSq = dx * dx + dy * dy;
+        if (distSq > 1 && distSq < IMPULSE_RADIUS * IMPULSE_RADIUS) {
+          const dist = Math.sqrt(distSq);
+          const falloff = 1 - dist / IMPULSE_RADIUS;
+          const kick = 115 * falloff;
+          b.vx += (dx / dist) * kick;
+          b.vy += (dy / dist) * kick;
+        }
+      }
+
+      if (stateRef.current.paused || prefersReducedMotion) {
+        draw();
+      }
+    };
+
     const handlePointerLeave = () => {
       pointer.active = false;
     };
@@ -363,6 +429,7 @@ export function BoidsCanvas({
     }
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerdown', handlePointerDown, { passive: true });
     document.addEventListener('mouseleave', handlePointerLeave);
     resize();
 
@@ -370,6 +437,7 @@ export function BoidsCanvas({
       return () => {
         observer.disconnect();
         window.removeEventListener('pointermove', handlePointerMove);
+        window.removeEventListener('pointerdown', handlePointerDown);
         document.removeEventListener('mouseleave', handlePointerLeave);
       };
     }
@@ -404,6 +472,7 @@ export function BoidsCanvas({
       window.cancelAnimationFrame(rafId);
       observer.disconnect();
       window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('mouseleave', handlePointerLeave);
     };
   }, []);

@@ -57,7 +57,7 @@ export function App() {
     document.documentElement.classList.toggle('dark', isDark);
     const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
-      metaTheme.setAttribute('content', isDark ? '#0E0F11' : '#F2F1EC');
+      metaTheme.setAttribute('content', isDark ? '#101214' : '#F7F8FA');
     }
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, theme);
@@ -71,7 +71,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F2F1EC] text-[#141518] transition-colors duration-200 dark:bg-[#0E0F11] dark:text-[#ECEEE9]">
+    <div className="min-h-screen overflow-x-clip bg-[#F7F8FA] text-[#11151B] transition-colors duration-200 dark:bg-[#101214] dark:text-[#F3F5F7]">
       <Navbar
         lang={lang}
         onChangeLang={setLang}

@@ -13,7 +13,7 @@ interface FieldParticle {
   vx: number;
   vy: number;
   phase: number;
-  isCrosshair: boolean;
+  tone: 'cobalt' | 'teal';
 }
 
 const POINTER_RADIUS = 135;
@@ -54,7 +54,7 @@ export function ParticleFieldCanvas({ theme }: ParticleFieldCanvasProps) {
     };
 
     const seedParticles = (w: number, h: number) => {
-      const count = w < 640 ? 34 : 56;
+      const count = w < 640 ? 28 : 52;
       const list: FieldParticle[] = [];
       const cols = Math.max(4, Math.round(Math.sqrt((count * w) / Math.max(h, 1))));
       const rows = Math.max(3, Math.ceil(count / cols));
@@ -74,7 +74,7 @@ export function ParticleFieldCanvas({ theme }: ParticleFieldCanvasProps) {
           vx: 0,
           vy: 0,
           phase: i * 0.55,
-          isCrosshair: i % 4 === 0,
+          tone: i % 2 === 0 ? 'cobalt' : 'teal',
         });
       }
       particles = list;
@@ -132,10 +132,11 @@ export function ParticleFieldCanvas({ theme }: ParticleFieldCanvasProps) {
       if (width === 0 || height === 0) return;
       const isDark = themeRef.current === 'dark';
 
-      const baseDot = isDark ? 'rgba(236, 238, 233, 0.24)' : 'rgba(20, 21, 24, 0.22)';
-      const activeAccent = isDark ? 'rgba(255, 90, 31, 0.78)' : 'rgba(217, 70, 18, 0.78)';
-      const baseLine = isDark ? 'rgba(236, 238, 233, 0.06)' : 'rgba(20, 21, 24, 0.06)';
-      const activeLine = isDark ? 'rgba(255, 90, 31, 0.24)' : 'rgba(217, 70, 18, 0.24)';
+      const baseDot = isDark ? 'rgba(243, 245, 247, 0.22)' : 'rgba(17, 21, 27, 0.20)';
+      const cobaltActive = isDark ? 'rgba(59, 130, 246, 0.78)' : 'rgba(29, 78, 216, 0.78)';
+      const tealActive = isDark ? 'rgba(20, 184, 166, 0.78)' : 'rgba(15, 118, 110, 0.78)';
+      const baseLine = isDark ? 'rgba(243, 245, 247, 0.05)' : 'rgba(17, 21, 27, 0.05)';
+      const activeLine = isDark ? 'rgba(20, 184, 166, 0.22)' : 'rgba(37, 99, 235, 0.22)';
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
@@ -165,21 +166,14 @@ export function ParticleFieldCanvas({ theme }: ParticleFieldCanvasProps) {
         const near =
           pointer.active &&
           (p.x - pointer.x) ** 2 + (p.y - pointer.y) ** 2 < POINTER_RADIUS ** 2;
-        const color = near ? activeAccent : baseDot;
-
-        if (p.isCrosshair) {
-          ctx.strokeStyle = color;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(p.x - 3, p.y);
-          ctx.lineTo(p.x + 3, p.y);
-          ctx.moveTo(p.x, p.y - 3);
-          ctx.lineTo(p.x, p.y + 3);
-          ctx.stroke();
-        } else {
-          ctx.fillStyle = color;
-          ctx.fillRect(p.x - 1, p.y - 1, 2.2, 2.2);
-        }
+        ctx.fillStyle = near
+          ? p.tone === 'cobalt'
+            ? cobaltActive
+            : tealActive
+          : baseDot;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, near ? 2 : 1.5, 0, Math.PI * 2);
+        ctx.fill();
       }
     };
 

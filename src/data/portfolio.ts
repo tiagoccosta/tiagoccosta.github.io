@@ -106,8 +106,8 @@ export const UI_COPY = {
   },
   hero: {
     badge: {
-      en: 'AVAILABLE // SÃO PAULO, BR',
-      pt: 'DISPONÍVEL // SÃO PAULO, BR',
+      en: 'Open to Game Studio Opportunities',
+      pt: 'Aberto a Oportunidades em Estúdios de Jogos',
     },
     role: {
       en: 'Game Developer & Software Engineer',
@@ -126,42 +126,24 @@ export const UI_COPY = {
       pt: 'Engenheiro de software especializado em Unity3D, C# e pipelines com IA — com títulos publicados para Nintendo Switch, Xbox, Steam, Android, iOS e WebGL em gameplay, porting multiplataforma, multiplayer e backends em .NET e Java.',
     },
     exploreCta: {
-      en: 'Explore Shipped Works',
-      pt: 'Ver Jogos Publicados',
+      en: 'Browse Games',
+      pt: 'Ver Jogos',
     },
-    stats: [
-      {
-        key: 'TITLES',
-        value: '14',
-        label: { en: 'Shipped & Built Titles', pt: 'Títulos & Projetos' },
-      },
-      {
-        key: 'PLATFORMS',
-        value: '06',
-        label: { en: 'Target Platforms', pt: 'Plataformas Publicadas' },
-      },
-      {
-        key: 'AWARD',
-        value: 'BIG Festival',
-        label: { en: 'Best Game Popular Vote', pt: 'Voto Popular BIG Festival' },
-      },
-    ],
     sim: {
-      label: { en: 'SIM_VIEWPORT // BOIDS_2D', pt: 'SIM_VIEWPORT // BOIDS_2D' },
-      agents: { en: 'AGENTS', pt: 'AGENTES' },
+      label: { en: 'Boids', pt: 'Boids' },
       attract: { en: 'Attract', pt: 'Atrair' },
       repel: { en: 'Repel', pt: 'Repelir' },
-      gizmos: { en: 'Gizmos', pt: 'Gizmos' },
+      vectors: { en: 'Vectors', pt: 'Vetores' },
       pause: { en: 'Pause', pt: 'Pausar' },
       play: { en: 'Play', pt: 'Retomar' },
       pointerHint: {
-        en: 'Move cursor across viewport to steer flock',
-        pt: 'Mova o cursor para direcionar o enxame',
+        en: 'Move or click to steer',
+        pt: 'Mova ou clique para interagir',
       },
     },
     platformsLabel: {
-      en: 'Shipped Production Targets',
-      pt: 'Plataformas em Produção',
+      en: 'Target Platforms',
+      pt: 'Plataformas',
     },
     location: {
       en: 'São Paulo - SP, Brazil',
@@ -169,10 +151,12 @@ export const UI_COPY = {
     },
   },
   games: {
-    eyebrow: { en: '01 // SHIPPED_WORKS', pt: '01 // OBRAS_PUBLICADAS' },
+    eyebrow: { en: 'Portfolio', pt: 'Portfólio' },
+    featuredLabel: { en: 'Featured Releases', pt: 'Destaques' },
+    libraryLabel: { en: 'Complete Library', pt: 'Biblioteca Completa' },
     title: {
-      en: 'Shipped Games & Production Work',
-      pt: 'Jogos Publicados & Produção',
+      en: 'Game Library & Shipped Titles',
+      pt: 'Biblioteca de Jogos & Lançamentos',
     },
     subtitle: {
       en: 'Commercial releases, multi-platform console ports, multiplayer systems, and interactive applications.',
@@ -188,7 +172,7 @@ export const UI_COPY = {
       { id: 'mobile' as const, label: { en: 'Mobile', pt: 'Mobile' } },
       { id: 'ar-tools' as const, label: { en: 'AR & Bots', pt: 'AR & Bots' } },
     ],
-    viewDetails: { en: 'Details', pt: 'Detalhes' },
+    viewDetails: { en: 'View Details', pt: 'Ver Detalhes' },
     modalRole: { en: 'Role & Contribution', pt: 'Papel & Contribuição' },
     modalChallenge: {
       en: 'Technical Challenge & Highlights',
@@ -199,7 +183,7 @@ export const UI_COPY = {
     close: { en: 'Close', pt: 'Fechar' },
   },
   experience: {
-    eyebrow: { en: 'Career Timeline', pt: 'Trajetória Profissional' },
+    eyebrow: { en: 'Career', pt: 'Carreira' },
     title: { en: 'Professional Experience', pt: 'Experiência Profissional' },
     subtitle: {
       en: 'Studios, software teams, and shipped systems in chronological order.',
@@ -207,7 +191,7 @@ export const UI_COPY = {
     },
   },
   about: {
-    eyebrow: { en: '02 // PROFILE_AND_STACK', pt: '02 // PERFIL_E_STACK' },
+    eyebrow: { en: 'About', pt: 'Sobre' },
     title: { en: 'About & Technical Stack', pt: 'Sobre & Stack Técnica' },
     paragraphs: [
       {
@@ -225,7 +209,7 @@ export const UI_COPY = {
     ],
   },
   projects: {
-    eyebrow: { en: '03 // TOOLS_AND_REPOS', pt: '03 // FERRAMENTAS_E_REPOS' },
+    eyebrow: { en: 'Open Source & Tools', pt: 'Open Source & Ferramentas' },
     title: {
       en: 'Personal Projects & Developer Tools',
       pt: 'Projetos Pessoais & Ferramentas',
@@ -236,7 +220,7 @@ export const UI_COPY = {
     },
   },
   education: {
-    eyebrow: { en: '04 // EDUCATION_AND_CERTS', pt: '04 // FORMACAO_E_CERTS' },
+    eyebrow: { en: 'Background', pt: 'Formação' },
     title: {
       en: 'Education, Certificates & Languages',
       pt: 'Formação, Certificados & Idiomas',
@@ -251,7 +235,7 @@ export const UI_COPY = {
     verifyLabel: { en: 'Verify Certificate', pt: 'Verificar Certificado' },
   },
   contact: {
-    eyebrow: { en: '05 // CONTACT', pt: '05 // CONTATO' },
+    eyebrow: { en: 'Contact', pt: 'Contato' },
     title: {
       en: "Let's build your next shipped title.",
       pt: 'Vamos construir seu próximo lançamento.',
@@ -270,6 +254,13 @@ export const UI_COPY = {
     },
   },
 } as const;
+
+export const FEATURED_GAME_IDS = [
+  'super-mombo-quest',
+  'dwarf-journey',
+  'adventure-llama',
+  'war-romano',
+] as const;
 
 export const SHIPPED_PLATFORMS = [
   'Nintendo Switch',

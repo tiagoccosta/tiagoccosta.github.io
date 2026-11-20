@@ -10,65 +10,53 @@ export function AboutSkillsSection({ lang }: AboutSkillsSectionProps) {
   return (
     <section
       id="about"
-      className="border-t border-[#D2CFC5] bg-[#E7E5DD]/45 py-18 sm:py-22 dark:border-[#272A30] dark:bg-[#151619]/40"
+      className="border-t border-slate-200/80 bg-white/60 py-16 sm:py-22 dark:border-white/8 dark:bg-[#14171B]/60"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="border-b border-[#D2CFC5] pb-6 dark:border-[#272A30]">
-          <p className="font-mono text-xs font-medium tracking-[0.16em] text-[#D94612] uppercase dark:text-[#FF5A1F]">
+        <div>
+          <p className="text-xs font-semibold tracking-widest text-[#2563EB] uppercase dark:text-[#14B8A6]">
             {copy.eyebrow[lang]}
           </p>
-          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#141518] dark:text-[#ECEEE9] sm:text-4xl">
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#11151B] sm:text-4xl dark:text-[#F3F5F7]">
             {copy.title[lang]}
           </h2>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-12">
-          <div className="rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6] p-6 sm:p-8 lg:col-span-5 dark:border-[#272A30] dark:bg-[#151619]">
-            <div className="mb-4 font-mono text-[10px] tracking-wider text-[#70757F] uppercase dark:text-[#6E747E]">
-              BIO_SUMMARY // README.MD
-            </div>
-            <div className="space-y-4 text-sm leading-relaxed text-[#4B4F57] dark:text-[#9A9FA8] sm:text-base">
-              {copy.paragraphs.map((paragraph, idx) => (
-                <p key={idx}>{paragraph[lang]}</p>
-              ))}
-            </div>
+        <div className="mt-10 grid gap-10 lg:grid-cols-12">
+          <div className="space-y-4 text-sm leading-relaxed text-slate-600 sm:text-base lg:col-span-5 dark:text-slate-300">
+            {copy.paragraphs.map((paragraph, idx) => (
+              <p key={idx}>{paragraph[lang]}</p>
+            ))}
           </div>
 
-          <div className="overflow-hidden rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6] lg:col-span-7 dark:border-[#272A30] dark:bg-[#151619]">
-            <div className="grid sm:grid-cols-2 sm:divide-x sm:divide-[#D2CFC5] dark:sm:divide-[#272A30]">
-              {SKILL_GROUPS.map((group, idx) => (
-                <div
-                  key={group.id}
-                  className={`flex flex-col p-5 sm:p-6 ${
-                    idx >= 2 ? 'border-t border-[#D2CFC5] dark:border-[#272A30]' : ''
-                  } ${idx === 1 ? 'border-t border-[#D2CFC5] sm:border-t-0 dark:border-[#272A30]' : ''}`}
-                >
-                  <div className="flex items-baseline justify-between gap-2">
-                    <h3 className="font-display text-base font-bold text-[#141518] dark:text-[#ECEEE9]">
-                      {group.title[lang]}
-                    </h3>
-                    <span className="font-mono text-[11px] font-semibold text-[#D94612] dark:text-[#FF5A1F]">
-                      {String(idx + 1).padStart(2, '0')}
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+            {SKILL_GROUPS.map((group) => (
+              <div
+                key={group.id}
+                className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-white/8 dark:bg-[#16191D]"
+              >
+                <div className="absolute top-0 right-0 left-0 h-0.5 bg-gradient-to-r from-[#2563EB] to-[#0D9488] opacity-80" />
+
+                <h3 className="font-display text-base font-bold text-[#11151B] dark:text-[#F3F5F7]">
+                  {group.title[lang]}
+                </h3>
+
+                <p className="mt-1 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                  {group.subtitle[lang]}
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {group.items.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-white/6 dark:text-slate-200"
+                    >
+                      {item}
                     </span>
-                  </div>
-
-                  <p className="mt-1.5 text-xs leading-relaxed text-[#70757F] dark:text-[#6E747E]">
-                    {group.subtitle[lang]}
-                  </p>
-
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {group.items.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-[2px] border border-[#D2CFC5] bg-[#F2F1EC] px-2 py-0.5 font-mono text-[11px] text-[#141518] dark:border-[#272A30] dark:bg-[#1B1D21] dark:text-[#ECEEE9]"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

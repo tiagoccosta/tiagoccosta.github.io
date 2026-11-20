@@ -17,16 +17,16 @@ interface HeroProps {
 
 export function Hero({ lang, theme }: HeroProps) {
   const [paused, setPaused] = useState(false);
-  const [showGizmos, setShowGizmos] = useState(true);
+  const [showGizmos, setShowGizmos] = useState(false);
   const [interactionMode, setInteractionMode] = useState<'attract' | 'repel'>('attract');
-  const [simStats, setSimStats] = useState({ fps: 60, count: 64 });
+  const [simStats, setSimStats] = useState({ fps: 60, count: 58 });
 
   const copy = UI_COPY.hero;
 
   return (
     <section
       id="top"
-      className="relative overflow-hidden border-b border-[#D2CFC5] bg-[#F2F1EC] bg-engine-grid dark:border-[#272A30] dark:bg-[#0E0F11]"
+      className="relative overflow-hidden border-b border-slate-200/80 bg-[#F7F8FA] studio-hero-wash dark:border-white/8 dark:bg-[#101214]"
     >
       <BoidsCanvas
         theme={theme}
@@ -36,176 +36,115 @@ export function Hero({ lang, theme }: HeroProps) {
         onStatsUpdate={setSimStats}
       />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 pt-12 pb-8 sm:px-6 sm:pt-16 sm:pb-10 lg:px-8">
-        <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-[2px] border border-[#D2CFC5] bg-[#FAF9F6]/90 px-2.5 py-1 font-mono text-[11px] font-medium tracking-wider text-[#4B4F57] backdrop-blur-xs dark:border-[#272A30] dark:bg-[#151619]/90 dark:text-[#9A9FA8]">
-              <span className="h-1.5 w-1.5 rounded-[1px] bg-[#D94612] dark:bg-[#FF5A1F]" />
-              <span>{copy.badge[lang]}</span>
-            </div>
-
-            <p className="mt-5 font-mono text-xs font-medium tracking-[0.14em] text-[#D94612] uppercase dark:text-[#FF5A1F]">
-              {copy.role[lang]}
-            </p>
-
-            <h1 className="mt-2 font-display text-4xl font-bold tracking-tight text-[#141518] dark:text-[#ECEEE9] sm:text-5xl lg:text-[3.35rem] lg:leading-[1.06]">
-              {copy.headlinePrefix[lang]}{' '}
-              <span className="underline decoration-[#D94612] decoration-2 underline-offset-[6px] dark:decoration-[#FF5A1F]">
-                {copy.headlineHighlight[lang]}
-              </span>
-            </h1>
-
-            <p className="mt-5 max-w-2xl rounded-[3px] border border-[#D2CFC5]/80 bg-[#FAF9F6]/80 p-4 text-sm leading-relaxed text-[#4B4F57] backdrop-blur-xs sm:text-base dark:border-[#272A30]/80 dark:bg-[#151619]/80 dark:text-[#9A9FA8]">
-              {copy.pitch[lang]}
-            </p>
-
-            <div className="mt-6 flex flex-wrap items-center gap-2.5">
-              <a
-                href="#games"
-                className="inline-flex items-center gap-2 rounded-[3px] bg-[#D94612] px-4 py-2.5 font-mono text-xs font-semibold tracking-wide text-[#FAF9F6] uppercase transition hover:brightness-110 dark:bg-[#FF5A1F] dark:text-[#0E0F11]"
-              >
-                <Gamepad2 className="h-4 w-4" />
-                {copy.exploreCta[lang]}
-                <ArrowDownRight className="h-4 w-4" />
-              </a>
-
-              <a
-                href={SOCIAL_LINKS.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6]/90 px-3.5 py-2.5 font-mono text-xs font-medium text-[#141518] backdrop-blur-xs transition hover:border-[#D94612] dark:border-[#272A30] dark:bg-[#151619]/90 dark:text-[#ECEEE9] dark:hover:border-[#FF5A1F]"
-              >
-                <LinkedInIcon className="h-3.5 w-3.5 text-[#4B4F57] dark:text-[#9A9FA8]" />
-                LinkedIn
-              </a>
-
-              <a
-                href={SOCIAL_LINKS.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6]/90 px-3.5 py-2.5 font-mono text-xs font-medium text-[#141518] backdrop-blur-xs transition hover:border-[#D94612] dark:border-[#272A30] dark:bg-[#151619]/90 dark:text-[#ECEEE9] dark:hover:border-[#FF5A1F]"
-              >
-                <GitHubIcon className="h-3.5 w-3.5 text-[#4B4F57] dark:text-[#9A9FA8]" />
-                GitHub
-              </a>
-
-              <a
-                href={SOCIAL_LINKS.unityAssetStore}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6]/90 px-3.5 py-2.5 font-mono text-xs font-medium text-[#141518] backdrop-blur-xs transition hover:border-[#D94612] dark:border-[#272A30] dark:bg-[#151619]/90 dark:text-[#ECEEE9] dark:hover:border-[#FF5A1F]"
-              >
-                <UnityIcon className="h-3.5 w-3.5 text-[#4B4F57] dark:text-[#9A9FA8]" />
-                Asset Store
-              </a>
+      <div className="relative z-10 mx-auto max-w-6xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20 sm:pb-12 lg:px-8">
+        <div className="max-w-3xl">
+          <div className="flex flex-wrap items-center gap-4">
+            <img
+              src="images/perfil.jpg"
+              alt="Tiago C. Costa"
+              className="h-14 w-14 rounded-2xl border border-slate-300 object-cover shadow-sm sm:h-16 sm:w-16 dark:border-white/15"
+            />
+            <div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span className="font-display text-lg font-bold text-[#11151B] dark:text-[#F3F5F7]">
+                  Tiago C. Costa
+                </span>
+                <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+                  <MapPin className="h-3.5 w-3.5 text-[#0D9488] dark:text-[#14B8A6]" />
+                  {copy.location[lang]}
+                </span>
+              </div>
+              <p className="mt-0.5 text-sm font-medium text-[#2563EB] dark:text-[#60A5FA]">
+                {copy.role[lang]}
+              </p>
             </div>
           </div>
 
-          <div className="lg:col-span-5">
-            <div className="rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6]/92 backdrop-blur-sm dark:border-[#272A30] dark:bg-[#151619]/92">
-              <div className="flex items-center justify-between border-b border-[#D2CFC5] px-4 py-2 font-mono text-[10px] tracking-wider text-[#70757F] uppercase dark:border-[#272A30] dark:text-[#6E747E]">
-                <span>ENGINEER_INSPECTOR</span>
-                <span>ID // TCC-SP</span>
-              </div>
+          <h1 className="mt-7 font-display text-4xl font-extrabold tracking-tight text-[#11151B] sm:text-5xl lg:text-[3.5rem] lg:leading-[1.06] dark:text-[#F3F5F7]">
+            {copy.headlinePrefix[lang]}{' '}
+            <span className="bg-gradient-to-r from-[#2563EB] to-[#0D9488] bg-clip-text text-transparent dark:from-[#3B82F6] dark:to-[#14B8A6]">
+              {copy.headlineHighlight[lang]}
+            </span>
+          </h1>
 
-              <div className="p-5">
-                <div className="flex items-center gap-4">
-                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-[2px] border border-[#D2CFC5] bg-[#E7E5DD] dark:border-[#272A30] dark:bg-[#1B1D21]">
-                    <img
-                      src="images/perfil.jpg"
-                      alt="Tiago C. Costa"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h2 className="font-display text-xl font-bold tracking-tight text-[#141518] dark:text-[#ECEEE9]">
-                      Tiago C. Costa
-                    </h2>
-                    <p className="mt-0.5 font-mono text-xs font-medium text-[#D94612] dark:text-[#FF5A1F]">
-                      {copy.role[lang]}
-                    </p>
-                    <p className="mt-2 inline-flex items-center gap-1.5 font-mono text-[11px] text-[#4B4F57] dark:text-[#9A9FA8]">
-                      <MapPin className="h-3 w-3 text-[#70757F] dark:text-[#6E747E]" />
-                      {copy.location[lang]}
-                    </p>
-                  </div>
-                </div>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
+            {copy.pitch[lang]}
+          </p>
 
-                <div className="mt-5 border-t border-[#D2CFC5] pt-4 dark:border-[#272A30]">
-                  <div className="font-mono text-[10px] tracking-wider text-[#70757F] uppercase dark:text-[#6E747E]">
-                    {copy.platformsLabel[lang]}
-                  </div>
-                  <div className="mt-2.5 flex flex-wrap gap-1.5">
-                    {SHIPPED_PLATFORMS.map((platform) => (
-                      <span
-                        key={platform}
-                        className="rounded-[2px] border border-[#D2CFC5] bg-[#E7E5DD]/70 px-2 py-0.5 font-mono text-[11px] text-[#141518] dark:border-[#272A30] dark:bg-[#1B1D21] dark:text-[#ECEEE9]"
-                      >
-                        {platform}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+          <p className="mt-4 text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
+            <span className="mr-2 text-slate-400 dark:text-slate-500">
+              {copy.platformsLabel[lang]}:
+            </span>
+            {SHIPPED_PLATFORMS.join(' · ')}
+          </p>
 
-                <div className="mt-4 border-t border-[#D2CFC5] pt-4 dark:border-[#272A30]">
-                  <div className="font-mono text-[10px] tracking-wider text-[#70757F] uppercase dark:text-[#6E747E]">
-                    CORE_STACK
-                  </div>
-                  <p className="mt-1.5 font-mono text-[11px] leading-relaxed text-[#4B4F57] dark:text-[#9A9FA8]">
-                    Unity3D • C# • .NET Core • Java • AI Pipelines • PlayFab • Firebase
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <a
+              href="#games"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-gradient-to-r from-[#2563EB] to-[#0D9488] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-110"
+            >
+              <Gamepad2 className="h-4 w-4" />
+              {copy.exploreCta[lang]}
+              <ArrowDownRight className="h-4 w-4" />
+            </a>
+
+            <a
+              href={SOCIAL_LINKS.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-300 bg-white/85 px-4 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-xs transition hover:border-[#2563EB]/60 hover:text-[#2563EB] dark:border-white/12 dark:bg-[#16191D]/85 dark:text-slate-200 dark:hover:border-[#3B82F6]/60 dark:hover:text-white"
+            >
+              <LinkedInIcon className="h-4 w-4 text-[#2563EB] dark:text-[#60A5FA]" />
+              LinkedIn
+            </a>
+
+            <a
+              href={SOCIAL_LINKS.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-300 bg-white/85 px-4 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-xs transition hover:border-slate-400 hover:text-slate-950 dark:border-white/12 dark:bg-[#16191D]/85 dark:text-slate-200 dark:hover:border-white/30 dark:hover:text-white"
+            >
+              <GitHubIcon className="h-4 w-4" />
+              GitHub
+            </a>
+
+            <a
+              href={SOCIAL_LINKS.unityAssetStore}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-300 bg-white/85 px-4 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-xs transition hover:border-[#0D9488]/60 hover:text-[#0D9488] dark:border-white/12 dark:bg-[#16191D]/85 dark:text-slate-200 dark:hover:border-[#14B8A6]/60 dark:hover:text-white"
+            >
+              <UnityIcon className="h-4 w-4 text-[#0D9488] dark:text-[#14B8A6]" />
+              Asset Store
+            </a>
           </div>
         </div>
 
-        {/* Spec Strip */}
-        <div className="mt-10 grid divide-y divide-[#D2CFC5] rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6]/90 backdrop-blur-xs sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-[#272A30] dark:border-[#272A30] dark:bg-[#151619]/90">
-          {copy.stats.map((stat) => (
-            <div key={stat.key} className="flex items-baseline justify-between gap-4 px-4 py-3">
-              <div>
-                <span className="block font-mono text-[10px] tracking-wider text-[#70757F] uppercase dark:text-[#6E747E]">
-                  {stat.key}
-                </span>
-                <span className="mt-0.5 block text-xs text-[#4B4F57] dark:text-[#9A9FA8]">
-                  {stat.label[lang]}
-                </span>
-              </div>
-              <span className="font-mono text-lg font-semibold tracking-tight text-[#141518] dark:text-[#ECEEE9]">
-                {stat.value}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Interactive Boids Viewport Controls */}
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-[3px] border border-[#D2CFC5] bg-[#E7E5DD]/85 px-3.5 py-2 font-mono text-[11px] backdrop-blur-xs dark:border-[#272A30] dark:bg-[#151619]/85">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[#4B4F57] dark:text-[#9A9FA8]">
-            <span className="font-semibold text-[#141518] dark:text-[#ECEEE9]">
+        {/* Discreet Boids interactive bar */}
+        <div className="mt-12 flex flex-col gap-2.5 border-t border-slate-200/80 pt-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:border-white/8 dark:text-slate-400">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-semibold text-slate-700 dark:text-slate-200">
               {copy.sim.label[lang]}
             </span>
-            <span className="text-[#70757F] dark:text-[#6E747E]">•</span>
-            <span>
-              {simStats.count} {copy.sim.agents[lang]}
-            </span>
-            <span className="text-[#70757F] dark:text-[#6E747E]">•</span>
-            <span>{paused ? 'PAUSED' : `${simStats.fps} FPS`}</span>
-            <span className="hidden text-[#70757F] lg:inline dark:text-[#6E747E]">
+            <span>·</span>
+            <span>{simStats.count}</span>
+            <span>·</span>
+            <span>{paused ? copy.sim.pause[lang] : `${simStats.fps} fps`}</span>
+            <span className="hidden sm:inline text-slate-400 dark:text-slate-500">
               — {copy.sim.pointerHint[lang]}
             </span>
           </div>
 
           <div className="flex flex-wrap items-center gap-1.5">
-            <div className="inline-flex rounded-[2px] border border-[#D2CFC5] bg-[#FAF9F6] p-0.5 dark:border-[#272A30] dark:bg-[#0E0F11]">
+            <div className="inline-flex rounded-md border border-slate-200 bg-white/80 p-0.5 dark:border-white/10 dark:bg-[#16191D]/80">
               <button
                 type="button"
                 onClick={() => setInteractionMode('attract')}
                 aria-pressed={interactionMode === 'attract'}
-                className={`rounded-[2px] px-2 py-0.5 text-[10px] font-medium uppercase transition ${
+                className={`rounded px-2.5 py-1 text-[11px] font-medium transition ${
                   interactionMode === 'attract'
-                    ? 'bg-[#D94612] text-[#FAF9F6] dark:bg-[#FF5A1F] dark:text-[#0E0F11]'
-                    : 'text-[#4B4F57] hover:text-[#141518] dark:text-[#9A9FA8] dark:hover:text-[#ECEEE9]'
+                    ? 'bg-[#2563EB] text-white'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
                 }`}
               >
                 {copy.sim.attract[lang]}
@@ -214,10 +153,10 @@ export function Hero({ lang, theme }: HeroProps) {
                 type="button"
                 onClick={() => setInteractionMode('repel')}
                 aria-pressed={interactionMode === 'repel'}
-                className={`rounded-[2px] px-2 py-0.5 text-[10px] font-medium uppercase transition ${
+                className={`rounded px-2.5 py-1 text-[11px] font-medium transition ${
                   interactionMode === 'repel'
-                    ? 'bg-[#D94612] text-[#FAF9F6] dark:bg-[#FF5A1F] dark:text-[#0E0F11]'
-                    : 'text-[#4B4F57] hover:text-[#141518] dark:text-[#9A9FA8] dark:hover:text-[#ECEEE9]'
+                    ? 'bg-[#0D9488] text-white'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
                 }`}
               >
                 {copy.sim.repel[lang]}
@@ -228,21 +167,21 @@ export function Hero({ lang, theme }: HeroProps) {
               type="button"
               onClick={() => setShowGizmos((prev) => !prev)}
               aria-pressed={showGizmos}
-              className={`inline-flex items-center gap-1 rounded-[2px] border px-2 py-1 text-[10px] font-medium uppercase transition ${
+              className={`inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-[11px] font-medium transition ${
                 showGizmos
-                  ? 'border-[#D94612]/60 bg-[#D94612]/12 text-[#D94612] dark:border-[#FF5A1F]/60 dark:bg-[#FF5A1F]/15 dark:text-[#FF5A1F]'
-                  : 'border-[#D2CFC5] bg-[#FAF9F6] text-[#4B4F57] hover:text-[#141518] dark:border-[#272A30] dark:bg-[#0E0F11] dark:text-[#9A9FA8] dark:hover:text-[#ECEEE9]'
+                  ? 'border-[#0D9488]/60 bg-[#0D9488]/12 text-[#0D9488] dark:border-[#14B8A6]/50 dark:text-[#14B8A6]'
+                  : 'border-slate-200 bg-white/80 text-slate-600 hover:text-slate-900 dark:border-white/10 dark:bg-[#16191D]/80 dark:text-slate-400 dark:hover:text-white'
               }`}
             >
               <Crosshair className="h-3 w-3" />
-              {copy.sim.gizmos[lang]}
+              {copy.sim.vectors[lang]}
             </button>
 
             <button
               type="button"
               onClick={() => setPaused((prev) => !prev)}
               aria-pressed={paused}
-              className="inline-flex items-center gap-1 rounded-[2px] border border-[#D2CFC5] bg-[#FAF9F6] px-2 py-1 text-[10px] font-medium text-[#141518] uppercase transition hover:border-[#A5A194] dark:border-[#272A30] dark:bg-[#0E0F11] dark:text-[#ECEEE9] dark:hover:border-[#3E434D]"
+              className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white/80 px-2.5 py-1.5 text-[11px] font-medium text-slate-600 transition hover:text-slate-900 dark:border-white/10 dark:bg-[#16191D]/80 dark:text-slate-300 dark:hover:text-white"
             >
               {paused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
               {paused ? copy.sim.play[lang] : copy.sim.pause[lang]}

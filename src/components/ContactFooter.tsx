@@ -46,29 +46,30 @@ export function ContactFooter({ lang, theme }: ContactFooterProps) {
     <>
       <section
         id="contact"
-        className="border-t border-[#D2CFC5] py-18 sm:py-22 dark:border-[#272A30]"
+        className="border-t border-slate-200/80 py-16 sm:py-22 dark:border-white/8"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-[3px] border border-[#D2CFC5] bg-[#FAF9F6] p-7 sm:p-10 dark:border-[#272A30] dark:bg-[#151619]">
+          <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10 dark:border-white/10 dark:bg-[#16191D]">
+            <div className="absolute top-0 right-0 left-0 h-0.5 bg-gradient-to-r from-[#2563EB] via-[#0D9488] to-[#2563EB]" />
             <ParticleFieldCanvas theme={theme} />
 
             <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-7">
-                <p className="font-mono text-xs font-medium tracking-[0.16em] text-[#D94612] uppercase dark:text-[#FF5A1F]">
+                <p className="text-xs font-semibold tracking-widest text-[#2563EB] uppercase dark:text-[#14B8A6]">
                   {copy.eyebrow[lang]}
                 </p>
-                <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#141518] dark:text-[#ECEEE9] sm:text-4xl">
+                <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#11151B] sm:text-4xl dark:text-[#F3F5F7]">
                   {copy.title[lang]}
                 </h2>
-                <p className="mt-3 max-w-xl text-sm leading-relaxed text-[#4B4F57] dark:text-[#9A9FA8] sm:text-base">
+                <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-300">
                   {copy.subtitle[lang]}
                 </p>
 
-                <div className="mt-6 flex flex-wrap items-center gap-2.5">
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                   <button
                     type="button"
                     onClick={handleCopyEmail}
-                    className="inline-flex items-center gap-2 rounded-[3px] bg-[#D94612] px-4 py-2.5 font-mono text-xs font-semibold tracking-wide text-[#FAF9F6] uppercase transition hover:brightness-110 dark:bg-[#FF5A1F] dark:text-[#0E0F11]"
+                    className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-gradient-to-r from-[#2563EB] to-[#0D9488] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-110"
                   >
                     {copied ? (
                       <>
@@ -85,33 +86,33 @@ export function ContactFooter({ lang, theme }: ContactFooterProps) {
 
                   <a
                     href={`mailto:${email}`}
-                    className="inline-flex items-center gap-2 rounded-[3px] border border-[#D2CFC5] bg-[#F2F1EC]/95 px-4 py-2.5 font-mono text-xs font-medium text-[#141518] uppercase backdrop-blur-xs transition hover:border-[#D94612] dark:border-[#272A30] dark:bg-[#1B1D21]/95 dark:text-[#ECEEE9] dark:hover:border-[#FF5A1F]"
+                    className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-300 bg-white/90 px-4 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-xs transition hover:border-[#2563EB]/60 hover:text-[#2563EB] dark:border-white/12 dark:bg-[#111418]/90 dark:text-slate-200 dark:hover:border-[#14B8A6]/60 dark:hover:text-white"
                   >
-                    <Mail className="h-4 w-4 text-[#D94612] dark:text-[#FF5A1F]" />
+                    <Mail className="h-4 w-4 text-[#2563EB] dark:text-[#14B8A6]" />
                     {copy.sendEmail[lang]}
                   </a>
                 </div>
               </div>
 
-              <div className="space-y-3 rounded-[3px] border border-[#D2CFC5] bg-[#F2F1EC]/92 p-5 backdrop-blur-xs lg:col-span-5 dark:border-[#272A30] dark:bg-[#0E0F11]/90">
-                <div className="flex items-center justify-between gap-3 border-b border-[#D2CFC5] pb-3 dark:border-[#272A30]">
-                  <span className="font-mono text-[11px] tracking-wider text-[#70757F] uppercase dark:text-[#6E747E]">
+              <div className="space-y-3 rounded-xl border border-slate-200 bg-[#F7F8FA]/92 p-5 backdrop-blur-xs lg:col-span-5 dark:border-white/10 dark:bg-[#101214]/90">
+                <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-3 dark:border-white/8">
+                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                     Email
                   </span>
                   <a
                     href={`mailto:${email}`}
-                    className="font-mono text-xs font-medium text-[#D94612] hover:underline dark:text-[#FF5A1F]"
+                    className="text-sm font-medium text-[#2563EB] hover:underline dark:text-[#60A5FA]"
                   >
                     {email}
                   </a>
                 </div>
 
-                <div className="flex items-center justify-between gap-3 border-b border-[#D2CFC5] pb-3 dark:border-[#272A30]">
-                  <span className="font-mono text-[11px] tracking-wider text-[#70757F] uppercase dark:text-[#6E747E]">
+                <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-3 dark:border-white/8">
+                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                     {copy.locationLabel[lang]}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 font-mono text-xs text-[#141518] dark:text-[#ECEEE9]">
-                    <MapPin className="h-3.5 w-3.5 text-[#D94612] dark:text-[#FF5A1F]" />
+                  <span className="inline-flex items-center gap-1.5 text-sm text-[#11151B] dark:text-[#F3F5F7]">
+                    <MapPin className="h-3.5 w-3.5 text-[#0D9488] dark:text-[#14B8A6]" />
                     {heroCopy.location[lang]}
                   </span>
                 </div>
@@ -122,9 +123,9 @@ export function ContactFooter({ lang, theme }: ContactFooterProps) {
                       href={SOCIAL_LINKS.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-[2px] border border-[#D2CFC5] bg-[#FAF9F6] px-3 py-1.5 font-mono text-[11px] font-medium text-[#141518] transition hover:border-[#D94612] dark:border-[#272A30] dark:bg-[#151619] dark:text-[#ECEEE9] dark:hover:border-[#FF5A1F]"
+                      className="inline-flex min-h-[38px] items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:border-[#2563EB]/60 hover:text-[#2563EB] dark:border-white/10 dark:bg-[#16191D] dark:text-slate-200 dark:hover:border-[#3B82F6]/60 dark:hover:text-white"
                     >
-                      <LinkedInIcon className="h-3.5 w-3.5 text-[#4B4F57] dark:text-[#9A9FA8]" />
+                      <LinkedInIcon className="h-3.5 w-3.5 text-[#2563EB] dark:text-[#60A5FA]" />
                       LinkedIn
                     </a>
 
@@ -132,9 +133,9 @@ export function ContactFooter({ lang, theme }: ContactFooterProps) {
                       href={SOCIAL_LINKS.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-[2px] border border-[#D2CFC5] bg-[#FAF9F6] px-3 py-1.5 font-mono text-[11px] font-medium text-[#141518] transition hover:border-[#D94612] dark:border-[#272A30] dark:bg-[#151619] dark:text-[#ECEEE9] dark:hover:border-[#FF5A1F]"
+                      className="inline-flex min-h-[38px] items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:border-slate-400 hover:text-slate-950 dark:border-white/10 dark:bg-[#16191D] dark:text-slate-200 dark:hover:border-white/30 dark:hover:text-white"
                     >
-                      <GitHubIcon className="h-3.5 w-3.5 text-[#4B4F57] dark:text-[#9A9FA8]" />
+                      <GitHubIcon className="h-3.5 w-3.5" />
                       GitHub
                     </a>
 
@@ -142,9 +143,9 @@ export function ContactFooter({ lang, theme }: ContactFooterProps) {
                       href={SOCIAL_LINKS.unityAssetStore}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-[2px] border border-[#D2CFC5] bg-[#FAF9F6] px-3 py-1.5 font-mono text-[11px] font-medium text-[#141518] transition hover:border-[#D94612] dark:border-[#272A30] dark:bg-[#151619] dark:text-[#ECEEE9] dark:hover:border-[#FF5A1F]"
+                      className="inline-flex min-h-[38px] items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:border-[#0D9488]/60 hover:text-[#0D9488] dark:border-white/10 dark:bg-[#16191D] dark:text-slate-200 dark:hover:border-[#14B8A6]/60 dark:hover:text-white"
                     >
-                      <UnityIcon className="h-3.5 w-3.5 text-[#4B4F57] dark:text-[#9A9FA8]" />
+                      <UnityIcon className="h-3.5 w-3.5 text-[#0D9488] dark:text-[#14B8A6]" />
                       Asset Store
                     </a>
                   </div>
@@ -155,12 +156,12 @@ export function ContactFooter({ lang, theme }: ContactFooterProps) {
         </div>
       </section>
 
-      <footer className="border-t border-[#D2CFC5] bg-[#E7E5DD]/65 py-7 dark:border-[#272A30] dark:bg-[#0E0F11]">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 font-mono text-[11px] text-[#70757F] sm:flex-row sm:px-6 lg:px-8 dark:text-[#6E747E]">
+      <footer className="border-t border-slate-200/80 bg-[#F7F8FA] py-7 dark:border-white/8 dark:bg-[#101214]">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 text-xs text-slate-500 sm:flex-row sm:px-6 lg:px-8 dark:text-slate-400">
           <p>
             &copy; {new Date().getFullYear()} {copy.copyright[lang]}
           </p>
-          <p>ENGINE_UI // REACT + TS + CANVAS_2D</p>
+          <p>São Paulo, Brasil</p>
         </div>
       </footer>
     </>

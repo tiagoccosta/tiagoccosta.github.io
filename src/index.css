@@ -2,9 +2,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-display: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
@@ -26,62 +25,25 @@
   }
 }
 
-.bg-engine-grid {
+.studio-hero-wash {
   background-image:
-    linear-gradient(to right, rgba(20, 21, 24, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(20, 21, 24, 0.045) 1px, transparent 1px);
-  background-size: 32px 32px;
+    radial-gradient(ellipse 65% 55% at 15% 10%, rgba(37, 99, 235, 0.08), transparent 65%),
+    radial-gradient(ellipse 55% 45% at 85% 20%, rgba(13, 148, 136, 0.07), transparent 65%);
 }
 
-.dark .bg-engine-grid {
+.dark .studio-hero-wash {
   background-image:
-    linear-gradient(to right, rgba(236, 238, 233, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(236, 238, 233, 0.035) 1px, transparent 1px);
+    radial-gradient(ellipse 65% 55% at 15% 10%, rgba(37, 99, 235, 0.09), transparent 65%),
+    radial-gradient(ellipse 55% 45% at 85% 20%, rgba(13, 148, 136, 0.08), transparent 65%);
 }
 
-.reticle-card {
-  position: relative;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.reticle-card::before,
-.reticle-card::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 150ms ease;
-  z-index: 10;
-}
-
-.reticle-card::before {
-  top: -1px;
-  left: -1px;
-  border-top: 2px solid #D94612;
-  border-left: 2px solid #D94612;
-}
-
-.reticle-card::after {
-  right: -1px;
-  bottom: -1px;
-  border-right: 2px solid #D94612;
-  border-bottom: 2px solid #D94612;
-}
-
-.dark .reticle-card::before {
-  border-top-color: #FF5A1F;
-  border-left-color: #FF5A1F;
-}
-
-.dark .reticle-card::after {
-  border-right-color: #FF5A1F;
-  border-bottom-color: #FF5A1F;
-}
-
-.reticle-card:hover::before,
-.reticle-card:hover::after {
-  opacity: 1;
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 ::-webkit-scrollbar {
@@ -89,28 +51,29 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #F2F1EC;
+  background: #F7F8FA;
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #0E0F11;
+  background: #101214;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D2CFC5;
-  border-radius: 2px;
-  border: 2px solid #F2F1EC;
+  background: #CBD5E1;
+  border-radius: 9999px;
+  border: 2px solid #F7F8FA;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #272A30;
-  border: 2px solid #0E0F11;
+  background: #282E38;
+  border-radius: 9999px;
+  border: 2px solid #101214;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #A5A194;
+  background: #94A3B8;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #3E434D;
+  background: #3B4454;
 }
